@@ -1,0 +1,39 @@
+# ===============================================================
+# STM32CubeMX + Keil MDK-ARM — Build artifacts & user config
+# ===============================================================
+
+# --- Object files & build artifacts ---
+*.o
+*.d
+*.crf
+*.dep
+*.lnp
+*.axf
+*.map
+*.htm
+*.iex
+
+# --- Output directories ---
+Obj/
+Listings/
+
+# --- User-specific IDE configuration ---
+*.uvguix.*
+*.uvoptx
+
+# --- Debug configurations ---
+DebugConfig/
+
+# --- Runtime Environment (auto-generated) ---
+RTE/
+
+# --- Debugger / trace stubs (auto-generated) ---
+EventRecorderStub.scvd
+
+# --- Backup files ---
+*.bak
+*~
+
+# --- OS junk ---
+.DS_Store
+Thumbs.db
