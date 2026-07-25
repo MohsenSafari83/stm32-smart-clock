@@ -1,0 +1,18 @@
+# Build
+Debug/
+Release/
+build/
+*.o
+*.elf
+*.hex
+*.bin
+*.map
+
+# IDE
+.vscode/
+*.uvguix.*
+*.uvoptx
+*.uvprojx.user
+
+# CubeMX backup
+*.bak

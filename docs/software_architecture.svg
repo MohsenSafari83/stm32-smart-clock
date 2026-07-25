@@ -1,0 +1,196 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 850" font-family="Consolas, monospace" font-size="12">
+  <defs>
+    <linearGradient id="layer4" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#1e3a5f"/>
+      <stop offset="100%" style="stop-color:#0f172a"/>
+    </linearGradient>
+    <linearGradient id="layer3" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#3b82f6"/>
+      <stop offset="100%" style="stop-color:#2563eb"/>
+    </linearGradient>
+    <linearGradient id="layer2" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#10b981"/>
+      <stop offset="100%" style="stop-color:#059669"/>
+    </linearGradient>
+    <linearGradient id="layer1" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#f59e0b"/>
+      <stop offset="100%" style="stop-color:#d97706"/>
+    </linearGradient>
+    <linearGradient id="layer0" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#6366f1"/>
+      <stop offset="100%" style="stop-color:#4f46e5"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1100" height="850" fill="#f1f5f9" rx="8"/>
+  <rect x="10" y="10" width="1080" height="830" fill="none" stroke="#cbd5e1" stroke-width="2" rx="6"/>
+
+  <!-- Title -->
+  <text x="550" y="40" text-anchor="middle" font-size="20" font-weight="bold" fill="#1e293b">STM32 Smart Clock — Software Architecture</text>
+  <text x="550" y="58" text-anchor="middle" font-size="11" fill="#64748b">Layered Architecture — Bare Metal, No RTOS</text>
+
+  <!-- ============================================ -->
+  <!-- LAYER 4: Application Layer -->
+  <!-- ============================================ -->
+  <rect x="30" y="80" width="1040" height="170" rx="6" fill="#e0f2fe" stroke="#0284c7" stroke-width="2" stroke-dasharray="6,3"/>
+  <text x="550" y="100" text-anchor="middle" font-size="13" font-weight="bold" fill="#0369a1">APPLICATION LAYER  ─  Core/Inc, Core/Src</text>
+
+  <!-- Module boxes in App Layer -->
+  <rect x="55" y="115" width="190" height="55" rx="5" fill="white" stroke="#0284c7" stroke-width="1.5"/>
+  <text x="150" y="135" text-anchor="middle" font-size="11" font-weight="bold" fill="#0c4a6e">Menu / FSM</text>
+  <text x="150" y="150" text-anchor="middle" font-size="9" fill="#64748b">Execute_Button_Action()</text>
+  <text x="150" y="163" text-anchor="middle" font-size="9" fill="#64748b">SystemState enum</text>
+
+  <rect x="270" y="115" width="190" height="55" rx="5" fill="white" stroke="#0284c7" stroke-width="1.5"/>
+  <text x="365" y="135" text-anchor="middle" font-size="11" font-weight="bold" fill="#0c4a6e">Temperature Sensing</text>
+  <text x="365" y="150" text-anchor="middle" font-size="9" fill="#64748b">Update_Temperature_LED()</text>
+  <text x="365" y="163" text-anchor="middle" font-size="9" fill="#64748b">Beta equation, PWM mapping</text>
+
+  <rect x="485" y="115" width="190" height="55" rx="5" fill="white" stroke="#0284c7" stroke-width="1.5"/>
+  <text x="580" y="135" text-anchor="middle" font-size="11" font-weight="bold" fill="#0c4a6e">Display Management</text>
+  <text x="580" y="150" text-anchor="middle" font-size="9" fill="#64748b">Refresh_Display_Output()</text>
+  <text x="580" y="163" text-anchor="middle" font-size="9" fill="#64748b">State-dependent rendering</text>
+
+  <rect x="700" y="115" width="190" height="55" rx="5" fill="white" stroke="#0284c7" stroke-width="1.5"/>
+  <text x="795" y="135" text-anchor="middle" font-size="11" font-weight="bold" fill="#0c4a6e">UART Reporting</text>
+  <text x="795" y="150" text-anchor="middle" font-size="9" fill="#64748b">Handle_UART_Transmission()</text>
+  <text x="795" y="163" text-anchor="middle" font-size="9" fill="#64748b">Periodic time/temp output</text>
+
+  <rect x="55" y="185" width="310" height="55" rx="5" fill="white" stroke="#0284c7" stroke-width="1.5"/>
+  <text x="210" y="205" text-anchor="middle" font-size="11" font-weight="bold" fill="#0c4a6e">Settings Management</text>
+  <text x="210" y="220" text-anchor="middle" font-size="9" fill="#64748b">Load_Settings_From_EEPROM() / Save_Settings_To_EEPROM()</text>
+  <text x="210" y="233" text-anchor="middle" font-size="9" fill="#64748b">SystemSettings struct (display, color, uart, boot_count)</text>
+
+  <rect x="390" y="185" width="310" height="55" rx="5" fill="white" stroke="#0284c7" stroke-width="1.5"/>
+  <text x="545" y="205" text-anchor="middle" font-size="11" font-weight="bold" fill="#0c4a6e">Main Super-Loop</text>
+  <text x="545" y="220" text-anchor="middle" font-size="9" fill="#64748b">while(1): poll buttons → read temp → uart tx → delay 5ms</text>
+  <text x="545" y="233" text-anchor="middle" font-size="9" fill="#64748b">1s display refresh timer (HAL_GetTick)</text>
+
+  <!-- ============================================ -->
+  <!-- LAYER 3: Hardware Abstraction Layer -->
+  <!-- ============================================ -->
+  <rect x="30" y="270" width="1040" height="110" rx="6" fill="#dbeafe" stroke="#2563eb" stroke-width="2" stroke-dasharray="6,3"/>
+  <text x="550" y="290" text-anchor="middle" font-size="13" font-weight="bold" fill="#1e40af">HARDWARE ABSTRACTION LAYER  ─  STM32G0xx HAL Driver</text>
+
+  <rect x="55" y="305" width="155" height="55" rx="5" fill="white" stroke="#2563eb" stroke-width="1.5"/>
+  <text x="132" y="325" text-anchor="middle" font-size="11" font-weight="bold" fill="#1e3a5f">HAL_GPIO</text>
+  <text x="132" y="340" text-anchor="middle" font-size="9" fill="#64748b">ReadPin / WritePin</text>
+  <text x="132" y="353" text-anchor="middle" font-size="9" fill="#64748b">Init / DeInit</text>
+
+  <rect x="225" y="305" width="155" height="55" rx="5" fill="white" stroke="#2563eb" stroke-width="1.5"/>
+  <text x="302" y="325" text-anchor="middle" font-size="11" font-weight="bold" fill="#1e3a5f">HAL_ADC</text>
+  <text x="302" y="340" text-anchor="middle" font-size="9" fill="#64748b">Start / Poll / Stop</text>
+  <text x="302" y="353" text-anchor="middle" font-size="9" fill="#64748b">ADCEx_Calibration</text>
+
+  <rect x="395" y="305" width="155" height="55" rx="5" fill="white" stroke="#2563eb" stroke-width="1.5"/>
+  <text x="472" y="325" text-anchor="middle" font-size="11" font-weight="bold" fill="#1e3a5f">HAL_TIM_PWM</text>
+  <text x="472" y="340" text-anchor="middle" font-size="9" fill="#64748b">Start / SetCompare</text>
+  <text x="472" y="353" text-anchor="middle" font-size="9" fill="#64748b">PWM Config</text>
+
+  <rect x="565" y="305" width="155" height="55" rx="5" fill="white" stroke="#2563eb" stroke-width="1.5"/>
+  <text x="642" y="325" text-anchor="middle" font-size="11" font-weight="bold" fill="#1e3a5f">HAL_I2C</text>
+  <text x="642" y="340" text-anchor="middle" font-size="9" fill="#64748b">Mem_Read / Mem_Write</text>
+  <text x="642" y="353" text-anchor="middle" font-size="9" fill="#64748b">EEPROM access</text>
+
+  <rect x="735" y="305" width="155" height="55" rx="5" fill="white" stroke="#2563eb" stroke-width="1.5"/>
+  <text x="812" y="325" text-anchor="middle" font-size="11" font-weight="bold" fill="#1e3a5f">HAL_RTC</text>
+  <text x="812" y="340" text-anchor="middle" font-size="9" fill="#64748b">GetTime / SetTime</text>
+  <text x="812" y="353" text-anchor="middle" font-size="9" fill="#64748b">GetDate / SetDate</text>
+
+  <rect x="905" y="305" width="155" height="55" rx="5" fill="white" stroke="#2563eb" stroke-width="1.5"/>
+  <text x="982" y="325" text-anchor="middle" font-size="11" font-weight="bold" fill="#1e3a5f">HAL_UART</text>
+  <text x="982" y="340" text-anchor="middle" font-size="9" fill="#64748b">Transmit (blocking)</text>
+  <text x="982" y="353" text-anchor="middle" font-size="9" fill="#64748b">8N1, 9600 baud</text>
+
+  <!-- ============================================ -->
+  <!-- LAYER 2: Driver Layer -->
+  <!-- ============================================ -->
+  <rect x="30" y="400" width="1040" height="120" rx="6" fill="#d1fae5" stroke="#10b981" stroke-width="2" stroke-dasharray="6,3"/>
+  <text x="550" y="420" text-anchor="middle" font-size="13" font-weight="bold" fill="#065f46">DRIVER LAYER  ─  Custom Peripheral Drivers</text>
+
+  <rect x="55" y="435" width="230" height="70" rx="5" fill="white" stroke="#10b981" stroke-width="1.5"/>
+  <text x="170" y="455" text-anchor="middle" font-size="11" font-weight="bold" fill="#065f46">TM1637 Display Driver</text>
+  <text x="170" y="470" text-anchor="middle" font-size="9" fill="#64748b">Core/Inc/tm1637.h  Core/Src/tm1637.c</text>
+  <text x="170" y="485" text-anchor="middle" font-size="9" fill="#64748b">Bit-banged protocol on PC6/PC7</text>
+  <text x="170" y="498" text-anchor="middle" font-size="9" fill="#64748b">Open-drain output, 4-digit segments</text>
+
+  <rect x="310" y="435" width="230" height="70" rx="5" fill="white" stroke="#10b981" stroke-width="1.5"/>
+  <text x="425" y="455" text-anchor="middle" font-size="11" font-weight="bold" fill="#065f46">NTC Thermistor Driver</text>
+  <text x="425" y="470" text-anchor="middle" font-size="9" fill="#64748b">(Inline in main.c)</text>
+  <text x="425" y="485" text-anchor="middle" font-size="9" fill="#64748b">Beta parameter equation</text>
+  <text x="425" y="498" text-anchor="middle" font-size="9" fill="#64748b">Voltage divider calculation</text>
+
+  <rect x="565" y="435" width="230" height="70" rx="5" fill="white" stroke="#10b981" stroke-width="1.5"/>
+  <text x="680" y="455" text-anchor="middle" font-size="11" font-weight="bold" fill="#065f46">GPIO Pin Definitions</text>
+  <text x="680" y="470" text-anchor="middle" font-size="9" fill="#64748b">Core/Inc/main.h (pin macros)</text>
+  <text x="680" y="485" text-anchor="middle" font-size="9" fill="#64748b">Peripheral config headers</text>
+  <text x="680" y="498" text-anchor="middle" font-size="9" fill="#64748b">(adc.h, gpio.h, i2c.h, etc.)</text>
+
+  <rect x="820" y="435" width="240" height="70" rx="5" fill="white" stroke="#10b981" stroke-width="1.5"/>
+  <text x="940" y="455" text-anchor="middle" font-size="11" font-weight="bold" fill="#065f46">CubeMX Generated Code</text>
+  <text x="940" y="470" text-anchor="middle" font-size="9" fill="#64748b">MX_*_Init() functions</text>
+  <text x="940" y="485" text-anchor="middle" font-size="9" fill="#64748b">HAL_MspInit / MSP files</text>
+  <text x="940" y="498" text-anchor="middle" font-size="9" fill="#64748b">stm32g0xx_it.c (ISRs)</text>
+
+  <!-- ============================================ -->
+  <!-- LAYER 1: CMSIS Core -->
+  <!-- ============================================ -->
+  <rect x="30" y="540" width="1040" height="70" rx="6" fill="#fef3c7" stroke="#d97706" stroke-width="2" stroke-dasharray="6,3"/>
+  <text x="550" y="560" text-anchor="middle" font-size="13" font-weight="bold" fill="#92400e">CMSIS-CORE  ─  Cortex-M0+ Microcontroller Abstraction</text>
+  
+  <rect x="55" y="572" width="200" height="28" rx="4" fill="white" stroke="#d97706" stroke-width="1"/>
+  <text x="155" y="591" text-anchor="middle" font-size="10" fill="#64748b">SystemCoreClockUpdate()</text>
+  <rect x="280" y="572" width="200" height="28" rx="4" fill="white" stroke="#d97706" stroke-width="1"/>
+  <text x="380" y="591" text-anchor="middle" font-size="10" fill="#64748b">NVIC Interrupt Control</text>
+  <rect x="505" y="572" width="200" height="28" rx="4" fill="white" stroke="#d97706" stroke-width="1"/>
+  <text x="605" y="591" text-anchor="middle" font-size="10" fill="#64748b">SysTick Timer (1ms)</text>
+  <rect x="730" y="572" width="200" height="28" rx="4" fill="white" stroke="#d97706" stroke-width="1"/>
+  <text x="830" y="591" text-anchor="middle" font-size="10" fill="#64748b">startup_stm32g030xx.s</text>
+
+  <!-- ============================================ -->
+  <!-- LAYER 0: Hardware -->
+  <!-- ============================================ -->
+  <rect x="30" y="630" width="1040" height="80" rx="6" fill="#e0e7ff" stroke="#4f46e5" stroke-width="2" stroke-dasharray="6,3"/>
+  <text x="550" y="650" text-anchor="middle" font-size="13" font-weight="bold" fill="#3730a3">HARDWARE  ─  STM32G030 + Peripherals</text>
+
+  <rect x="55" y="665" width="140" height="35" rx="4" fill="white" stroke="#4f46e5" stroke-width="1"/>
+  <text x="125" y="687" text-anchor="middle" font-size="10" fill="#1e293b">ADC1 (PA0)</text>
+  <rect x="210" y="665" width="140" height="35" rx="4" fill="white" stroke="#4f46e5" stroke-width="1"/>
+  <text x="280" y="687" text-anchor="middle" font-size="10" fill="#1e293b">TIM1 CH1-3</text>
+  <rect x="365" y="665" width="140" height="35" rx="4" fill="white" stroke="#4f46e5" stroke-width="1"/>
+  <text x="435" y="687" text-anchor="middle" font-size="10" fill="#1e293b">I2C2</text>
+  <rect x="520" y="665" width="140" height="35" rx="4" fill="white" stroke="#4f46e5" stroke-width="1"/>
+  <text x="590" y="687" text-anchor="middle" font-size="10" fill="#1e293b">USART2</text>
+  <rect x="675" y="665" width="140" height="35" rx="4" fill="white" stroke="#4f46e5" stroke-width="1"/>
+  <text x="745" y="687" text-anchor="middle" font-size="10" fill="#1e293b">RTC + LSE</text>
+  <rect x="830" y="665" width="140" height="35" rx="4" fill="white" stroke="#4f46e5" stroke-width="1"/>
+  <text x="900" y="687" text-anchor="middle" font-size="10" fill="#1e293b">GPIO A/B/C/D</text>
+
+  <!-- === DATA FLOW ARROWS === -->
+  <!-- App → HAL -->
+  <line x1="150" y1="240" x2="150" y2="305" stroke="#2563eb" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <line x1="365" y1="240" x2="302" y2="305" stroke="#2563eb" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <line x1="580" y1="240" x2="472" y2="305" stroke="#2563eb" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <line x1="795" y1="240" x2="982" y2="305" stroke="#2563eb" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <line x1="210" y1="240" x2="642" y2="305" stroke="#2563eb" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <line x1="545" y1="240" x2="545" y2="305" stroke="#2563eb" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- Labels for arrow groups -->
+  <text x="450" y="260" text-anchor="middle" font-size="9" fill="#2563eb" font-style="italic">Function calls via HAL API</text>
+
+  <!-- File listing -->
+  <rect x="30" y="730" width="1040" height="100" rx="6" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1"/>
+  <text x="550" y="750" text-anchor="middle" font-size="12" font-weight="bold" fill="#1e293b">Project File Map</text>
+  
+  <text x="55" y="772" font-size="9" fill="#475569">Core/Src/main.c</text>
+  <text x="200" y="772" font-size="9" fill="#94a3b8">— Application logic, FSM, main loop, callbacks</text>
+  <text x="55" y="788" font-size="9" fill="#475569">Core/Src/tm1637.c</text>
+  <text x="200" y="788" font-size="9" fill="#94a3b8">— TM1637 display driver (bit-banged protocol)</text>
+  <text x="55" y="804" font-size="9" fill="#475569">Core/Src/{adc,rtc,tim,i2c,usart,gpio,dma}.c</text>
+  <text x="200" y="804" font-size="9" fill="#94a3b8">— CubeMX-generated peripheral initialization</text>
+  <text x="55" y="820" font-size="9" fill="#475569">Core/Src/{stm32g0xx_it,stm32g0xx_hal_msp}.c</text>
+  <text x="200" y="820" font-size="9" fill="#94a3b8">— Interrupt handlers, MSP initialization</text>
+
+  <text x="1050" y="820" text-anchor="end" font-size="9" fill="#94a3b8">Rev 1.0</text>
+</svg>
