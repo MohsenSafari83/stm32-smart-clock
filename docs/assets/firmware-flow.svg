@@ -1,0 +1,205 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 920" font-family="'JetBrains Mono','Consolas',monospace">
+  <defs>
+    <marker id="fa-rt"  markerWidth="9" markerHeight="7" refX="8" refY="3.5" orient="auto"><polygon points="0 0,9 3.5,0 7" fill="#3b82f6"/></marker>
+    <marker id="fa-in"  markerWidth="9" markerHeight="7" refX="8" refY="3.5" orient="auto"><polygon points="0 0,9 3.5,0 7" fill="#f59e0b"/></marker>
+    <marker id="fa-hal" markerWidth="9" markerHeight="7" refX="8" refY="3.5" orient="auto"><polygon points="0 0,9 3.5,0 7" fill="#a855f7"/></marker>
+    <pattern id="f-grid" width="22" height="22" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r="0.7" fill="#1b2438"/></pattern>
+    <symbol id="i-flow"  viewBox="0 0 16 16"><path d="M1 8 L11 8"/><path d="M8 5 L11 8 L8 11"/></symbol>
+    <symbol id="i-therm" viewBox="0 0 16 16"><rect x="6" y="1" width="4" height="9" rx="2"/><circle cx="8" cy="12.5" r="2.5"/></symbol>
+    <symbol id="i-display" viewBox="0 0 16 16"><rect x="2" y="2" width="12" height="12" rx="1.5"/><line x1="8" y1="4" x2="8" y2="8"/><line x1="4" y1="8" x2="12" y2="8"/><line x1="8" y1="8" x2="8" y2="12"/></symbol>
+    <symbol id="i-uart"  viewBox="0 0 16 16"><path d="M2 13 Q8 2 14 13"/><path d="M5 13 Q8 8 11 13"/><circle cx="8" cy="13" r="1" fill="currentColor" stroke="none"/></symbol>
+    <symbol id="i-eeprom" viewBox="0 0 16 16"><rect x="3" y="4" width="10" height="8" rx="1"/><line x1="5" y1="6" x2="11" y2="6"/><line x1="5" y1="8" x2="11" y2="8"/><line x1="5" y1="10" x2="11" y2="10"/><line x1="1" y1="6" x2="3" y2="6"/><line x1="1" y1="10" x2="3" y2="10"/><line x1="13" y1="6" x2="15" y2="6"/><line x1="13" y1="10" x2="15" y2="10"/></symbol>
+    <symbol id="i-gpio"  viewBox="0 0 16 16"><circle cx="8" cy="8" r="3"/><line x1="8" y1="1" x2="8" y2="5"/><line x1="8" y1="11" x2="8" y2="15"/></symbol>
+    <symbol id="i-adc"   viewBox="0 0 16 16"><path d="M1 11 Q3 3 5 11 T9 11"/><path d="M9 11 L11 11 L11 5 L13 5 L13 11 L15 11"/></symbol>
+    <symbol id="i-pwm"   viewBox="0 0 16 16"><path d="M1 12 L1 5 L5 5 L5 12 L9 12 L9 5 L13 5 L13 12 L15 12"/></symbol>
+    <symbol id="i-i2c"   viewBox="0 0 16 16"><line x1="1" y1="5" x2="15" y2="5"/><line x1="1" y1="11" x2="15" y2="11"/><line x1="4" y1="3" x2="4" y2="7"/><line x1="8" y1="9" x2="8" y2="13"/><line x1="12" y1="3" x2="12" y2="7"/></symbol>
+    <symbol id="i-clock" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6.5"/><line x1="8" y1="8" x2="8" y2="4"/><line x1="8" y1="8" x2="11" y2="9.5"/></symbol>
+    <symbol id="i-chip"  viewBox="0 0 16 16"><rect x="4" y="4" width="8" height="8" rx="1"/><line x1="1" y1="6" x2="4" y2="6"/><line x1="1" y1="10" x2="4" y2="10"/><line x1="12" y1="6" x2="15" y2="6"/><line x1="12" y1="10" x2="15" y2="10"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="6" y1="12" x2="6" y2="15"/><line x1="10" y1="12" x2="10" y2="15"/></symbol>
+    <symbol id="i-warn"  viewBox="0 0 16 16"><path d="M8 1.5 L15 14 L1 14 Z"/><line x1="8" y1="6" x2="8" y2="10"/><circle cx="8" cy="12" r="0.7" fill="currentColor" stroke="none"/></symbol>
+  </defs>
+
+  <style>
+    .kicker  { font: 700 9.5px 'JetBrains Mono',monospace; letter-spacing:1.4px; fill:#f59e0b; }
+    .title   { font: 700 19px 'JetBrains Mono',monospace; fill:#f8fafc; }
+    .subtitle{ font: 11px 'JetBrains Mono',monospace; fill:#64748b; }
+    .corner  { font: 9.5px 'JetBrains Mono',monospace; fill:#475569; }
+    .sec-t   { font: 700 14.5px 'JetBrains Mono',monospace; }
+    .sec-s   { font: 10px 'JetBrains Mono',monospace; fill:#5b6b80; }
+    .card    { fill:#141d31; stroke:#263349; stroke-width:1.25; }
+    .n-title { font: 700 12.5px 'JetBrains Mono',monospace; fill:#f1f5f9; }
+    .n-sub   { font: 10px 'JetBrains Mono',monospace; fill:#8b98ac; }
+    .n-micro { font: 9px 'JetBrains Mono',monospace; fill:#5b6b80; }
+    .foot    { font: 9px 'JetBrains Mono',monospace; fill:#3a475c; letter-spacing:.4px; }
+    .badge   { fill:#0b111e; }
+    th.h     { font: 700 10.5px 'JetBrains Mono',monospace; fill:#f1f5f9; }
+    .td      { font: 9.5px 'JetBrains Mono',monospace; fill:#8b98ac; }
+  </style>
+
+  <rect width="1100" height="920" fill="#0f172a" rx="10"/>
+  <rect width="1100" height="920" fill="url(#f-grid)" rx="10"/>
+  <rect x="10" y="10" width="1080" height="900" fill="none" stroke="#334155" stroke-width="1.5" rx="8"/>
+  <rect x="26" y="20" width="1048" height="3" rx="1.5" fill="#f59e0b" opacity="0.85"/>
+
+  <!-- Header -->
+  <text x="40" y="42" class="kicker">ENGINEERING DIAGRAM · 02 / 06</text>
+  <text x="550" y="48" text-anchor="middle" class="title">Firmware Call Flow</text>
+  <text x="550" y="67" text-anchor="middle" class="subtitle">Runtime graph (every ~6 ms iteration) and init graph (boot once) — from ::FW_RUNTIME_GRAPH / ::FW_INIT_GRAPH</text>
+  <use href="#i-chip" x="1030" y="30" width="14" height="14" color="#475569"/>
+  <text x="1060" y="42" text-anchor="end" class="corner">STM32G030 · Smart Clock Sim</text>
+  <line x1="40" y1="80" x2="1060" y2="80" stroke="#1c2740" stroke-width="1"/>
+
+  <!-- LEFT: RUNTIME CALL GRAPH -->
+  <rect x="40" y="94" width="500" height="504" rx="10" fill="#121a2c" stroke="#26344d" stroke-width="1.25"/>
+  <use href="#i-flow" x="60" y="108" width="14" height="14" color="#60a5fa"/>
+  <text x="82" y="120" class="sec-t" fill="#60a5fa">Runtime Call Graph</text>
+  <text x="82" y="137" class="sec-s">every super-loop iteration · 14 directed edges</text>
+
+  <!-- superloop entry -->
+  <rect x="170" y="156" width="240" height="42" rx="8" fill="#0b1420" stroke="#22d3ee" stroke-width="2"/>
+  <text x="290" y="174" text-anchor="middle" class="n-title" font-size="14" fill="#67e8f9">superloop</text>
+  <text x="290" y="190" text-anchor="middle" class="n-micro">while(1) entry point</text>
+
+  <!-- Application modules row 1 -->
+  <rect x="66"  y="234" width="196" height="56" rx="7" class="card" stroke="#3b82f6"/>
+  <use href="#i-flow" x="78" y="244" width="13" height="13" color="#93c5fd"/>
+  <text x="98" y="256" class="n-title" font-size="12">fsm</text>
+  <text x="78" y="274" class="n-sub">Execute_Button_Action</text>
+
+  <rect x="278" y="234" width="216" height="56" rx="7" class="card" stroke="#22c55e"/>
+  <use href="#i-therm" x="290" y="244" width="13" height="13" color="#86efac"/>
+  <text x="310" y="256" class="n-title" font-size="12">temp_sense</text>
+  <text x="290" y="274" class="n-sub">Update_Temperature_LED</text>
+
+  <!-- Application modules row 2 -->
+  <rect x="66"  y="314" width="196" height="56" rx="7" class="card" stroke="#a855f7"/>
+  <use href="#i-display" x="78" y="324" width="13" height="13" color="#c084fc"/>
+  <text x="98" y="336" class="n-title" font-size="12">display_mgr</text>
+  <text x="78" y="354" class="n-sub">Refresh_Display_Output</text>
+
+  <rect x="278" y="314" width="216" height="56" rx="7" class="card" stroke="#f59e0b"/>
+  <use href="#i-uart" x="290" y="324" width="13" height="13" color="#fbbf24"/>
+  <text x="310" y="336" class="n-title" font-size="12">uart_report</text>
+  <text x="290" y="354" class="n-sub">Handle_UART_Transmission</text>
+
+  <rect x="172" y="392" width="196" height="56" rx="7" class="card" stroke="#ef4444"/>
+  <use href="#i-eeprom" x="184" y="402" width="13" height="13" color="#f87171"/>
+  <text x="204" y="414" class="n-title" font-size="12">settings</text>
+  <text x="184" y="432" class="n-sub">Load/Save_EEPROM</text>
+
+  <!-- superloop → app edges -->
+  <path d="M 220 198 L 164 230" stroke="#3b82f6" stroke-width="1.75" fill="none" marker-end="url(#fa-rt)"/>
+  <path d="M 360 198 L 380 230" stroke="#22c55e" stroke-width="1.75" fill="none" marker-end="url(#fa-rt)"/>
+  <path d="M 290 198 C 290 214 190 214 164 310" stroke="#a855f7" stroke-width="1.75" fill="none" marker-end="url(#fa-rt)"/>
+  <path d="M 290 198 C 290 214 400 214 380 310" stroke="#f59e0b" stroke-width="1.75" fill="none" marker-end="url(#fa-rt)"/>
+  <path d="M 290 198 C 290 220 280 220 270 388" stroke="#ef4444" stroke-width="1.75" fill="none" marker-end="url(#fa-rt)"/>
+
+  <!-- HAL target panel -->
+  <rect x="66" y="470" width="428" height="46" rx="7" fill="#151022" stroke="#a855f7" stroke-width="1.5"/>
+  <text x="280" y="490" text-anchor="middle" class="n-title" font-size="12.5" fill="#c084fc">HAL Modules</text>
+  <text x="280" y="507" text-anchor="middle" class="n-micro">hal_gpio · hal_adc · hal_tim · hal_rtc · hal_uart · hal_i2c · ntc (inline) · tm1637 (driver)</text>
+
+  <!-- App → HAL edges (dashed) -->
+  <path d="M 164 290 L 164 466" stroke="#3b82f6" stroke-width="1.4" stroke-dasharray="5,3" fill="none" marker-end="url(#fa-hal)"/>
+  <path d="M 386 290 C 386 340 236 340 236 466" stroke="#22c55e" stroke-width="1.4" stroke-dasharray="5,3" fill="none" marker-end="url(#fa-hal)"/>
+  <path d="M 164 370 C 164 410 300 410 300 466" stroke="#a855f7" stroke-width="1.4" stroke-dasharray="5,3" fill="none" marker-end="url(#fa-hal)"/>
+  <path d="M 386 370 C 386 410 340 410 340 466" stroke="#f59e0b" stroke-width="1.4" stroke-dasharray="5,3" fill="none" marker-end="url(#fa-hal)"/>
+  <path d="M 270 448 L 270 466" stroke="#ef4444" stroke-width="1.4" stroke-dasharray="5,3" fill="none" marker-end="url(#fa-hal)"/>
+
+  <!-- Edge legend -->
+  <rect x="66" y="528" width="428" height="50" rx="7" fill="#0d1420" stroke="#26344d" stroke-width="1"/>
+<text x="280" y="546" text-anchor="middle" class="n-sub">
+  solid = superloop → app module · dashed = app module → HAL
+</text> 
+  <text x="280" y="564" text-anchor="middle" class="n-micro">tm1637 driver calls hal_gpio (bit-banged) · ntc Beta math is inline in temp_sense</text>
+
+  <!-- RIGHT: INIT DEPENDENCY GRAPH -->
+  <rect x="560" y="94" width="500" height="504" rx="10" fill="#121a2c" stroke="#26344d" stroke-width="1.25"/>
+  <use href="#i-flow" x="580" y="108" width="14" height="14" color="#fbbf24"/>
+  <text x="602" y="120" class="sec-t" fill="#fbbf24">Init Dependency Graph</text>
+  <text x="602" y="137" class="sec-s">boot once · 9 init edges · then enter while(1)</text>
+
+  <rect x="620" y="156" width="200" height="42" rx="8" fill="#1c1710" stroke="#f59e0b" stroke-width="2"/>
+  <text x="720" y="174" text-anchor="middle" class="n-title" font-size="14">cubemx</text>
+  <text x="720" y="190" text-anchor="middle" class="n-micro">init orchestrator</text>
+
+  <!-- Init targets — right column -->
+  <g>
+    <rect x="878" y="156" width="164" height="32" rx="6" class="card" stroke="#a855f7"/>
+    <use href="#i-gpio" x="888" y="164" width="12" height="12" color="#c084fc"/><text x="908" y="176" class="n-title" font-size="10.5">hal_gpio</text><text x="908" y="184" class="n-micro" font-size="7.5">MX_GPIO_Init</text>
+
+    <rect x="878" y="196" width="164" height="32" rx="6" class="card" stroke="#a855f7"/>
+    <use href="#i-flow" x="888" y="204" width="12" height="12" color="#c084fc"/><text x="908" y="216" class="n-title" font-size="10.5">hal_dma</text><text x="908" y="224" class="n-micro" font-size="7.5">MX_DMA_Init</text>
+
+    <rect x="878" y="236" width="164" height="32" rx="6" class="card" stroke="#a855f7"/>
+    <use href="#i-adc" x="888" y="244" width="12" height="12" color="#c084fc"/><text x="908" y="256" class="n-title" font-size="10.5">hal_adc</text><text x="908" y="264" class="n-micro" font-size="7.5">MX_ADC1_Init</text>
+
+    <rect x="878" y="276" width="164" height="32" rx="6" class="card" stroke="#a855f7"/>
+    <use href="#i-pwm" x="888" y="284" width="12" height="12" color="#c084fc"/><text x="908" y="296" class="n-title" font-size="10.5">hal_tim</text><text x="908" y="304" class="n-micro" font-size="7.5">MX_TIM1_Init</text>
+
+    <rect x="878" y="316" width="164" height="32" rx="6" class="card" stroke="#a855f7"/>
+    <use href="#i-i2c" x="888" y="324" width="12" height="12" color="#c084fc"/><text x="908" y="336" class="n-title" font-size="10.5">hal_i2c</text><text x="908" y="344" class="n-micro" font-size="7.5">MX_I2C2_Init</text>
+
+    <rect x="878" y="356" width="164" height="32" rx="6" class="card" stroke="#a855f7"/>
+    <use href="#i-uart" x="888" y="364" width="12" height="12" color="#c084fc"/><text x="908" y="376" class="n-title" font-size="10.5">hal_uart</text><text x="908" y="384" class="n-micro" font-size="7.5">MX_USART2_Init</text>
+
+    <rect x="878" y="396" width="164" height="32" rx="6" class="card" stroke="#a855f7"/>
+    <use href="#i-clock" x="888" y="404" width="12" height="12" color="#c084fc"/><text x="908" y="416" class="n-title" font-size="10.5">hal_rtc</text><text x="908" y="424" class="n-micro" font-size="7.5">MX_RTC_Init</text>
+  </g>
+
+  <path d="M 820 177 L 874 172" stroke="#f59e0b" stroke-width="1.5" fill="none" marker-end="url(#fa-in)"/>
+  <path d="M 820 177 L 874 212" stroke="#f59e0b" stroke-width="1.5" fill="none" marker-end="url(#fa-in)"/>
+  <path d="M 820 177 L 874 252" stroke="#f59e0b" stroke-width="1.5" fill="none" marker-end="url(#fa-in)"/>
+  <path d="M 820 177 L 874 292" stroke="#f59e0b" stroke-width="1.5" fill="none" marker-end="url(#fa-in)"/>
+  <path d="M 820 177 L 874 332" stroke="#f59e0b" stroke-width="1.5" fill="none" marker-end="url(#fa-in)"/>
+  <path d="M 820 177 L 874 372" stroke="#f59e0b" stroke-width="1.5" fill="none" marker-end="url(#fa-in)"/>
+  <path d="M 820 177 L 874 412" stroke="#f59e0b" stroke-width="1.5" fill="none" marker-end="url(#fa-in)"/>
+
+  <!-- system_core + nvic (left column in init graph) -->
+  <rect x="620" y="236" width="180" height="32" rx="6" class="card" stroke="#f59e0b"/>
+  <text x="710" y="256" text-anchor="middle" class="n-title" font-size="10.5">system_core</text>
+  <rect x="620" y="276" width="180" height="32" rx="6" class="card" stroke="#f59e0b"/>
+  <text x="710" y="296" text-anchor="middle" class="n-title" font-size="10.5">nvic</text>
+  <rect x="620" y="316" width="180" height="32" rx="6" class="card" stroke="#f59e0b"/>
+  <text x="710" y="336" text-anchor="middle" class="n-title" font-size="10.5">interrupts</text>
+
+  <path d="M 710 268 L 710 274" stroke="#f59e0b" stroke-width="1.4" fill="none" marker-end="url(#fa-in)"/>
+  <path d="M 710 316 L 710 310" stroke="#f59e0b" stroke-width="1.4" fill="none" marker-end="url(#fa-in)"/>
+
+  <!-- Init seq list -->
+  <rect x="620" y="368" width="420" height="122" rx="8" fill="#0d1420" stroke="#26344d" stroke-width="1"/>
+  <text x="830" y="386" text-anchor="middle" class="n-title" font-size="11.5">15-Step Init Sequence — ::FW_INIT_SEQUENCE</text>
+  <text x="636" y="406" class="n-sub">1. HAL_Init  2. SystemClock_Config  3. MX_GPIO_Init  4. MX_DMA_Init  5. MX_ADC1_Init</text>
+  <text x="636" y="424" class="n-sub">6. MX_I2C2_Init  7. MX_USART2_Init  8. MX_TIM1_Init  9. MX_RTC_Init  10. ADC_Cal</text>
+  <text x="636" y="442" class="n-sub">11. Load_EEPROM  12. tm1637_init  13. PWM_Start ×3  14. Initial_Display  15. while(1)</text>
+  <use href="#i-warn" x="636" y="460" width="11" height="11" color="#f87171"/>
+  <text x="654" y="470" class="n-micro" fill="#e2b8b8">DMA1_CH1 configured but never started · RTC resets to 00:36 every boot</text>
+
+  <!-- BOTTOM: DATA OWNERSHIP TABLE -->
+  <rect x="40" y="614" width="1020" height="270" rx="10" fill="#121a2c" stroke="#26344d" stroke-width="1.25"/>
+  <use href="#i-chip" x="60" y="628" width="14" height="14" color="#cbd5e1"/>
+  <text x="82" y="640" class="sec-t" fill="#e2e8f0">Global Data Ownership</text>
+  <text x="278" y="640" class="sec-s">::FW_DATA_MAP — 16 entries</text>
+
+  <rect x="60" y="656" width="980" height="24" rx="4" fill="#1b2438"/>
+  <text x="76"  y="672" class="td h">Variable</text>
+  <text x="272" y="672" class="td h">Type</text>
+  <text x="424" y="672" class="td h">Owner</text>
+  <text x="544" y="672" class="td h">Readers</text>
+  <text x="684" y="672" class="td h">Writers</text>
+  <text x="828" y="672" class="td h">Qualifier</text>
+  <text x="936" y="672" class="td h">Storage</text>
+
+  <g class="td">
+    <text x="76" y="696" fill="#dbe4f0">current_state</text><text x="272" y="696">SystemState</text><text x="424" y="696">fsm</text><text x="544" y="696">display_mgr</text><text x="684" y="696">fsm</text><text x="828" y="696">—</text><text x="936" y="696">RAM</text>
+    <text x="76" y="716" fill="#dbe4f0">menu_index</text><text x="272" y="716">int</text><text x="424" y="716">fsm</text><text x="544" y="716">display_mgr</text><text x="684" y="716">fsm</text><text x="828" y="716">—</text><text x="936" y="716">RAM</text>
+    <text x="76" y="736" fill="#dbe4f0">current_adc</text><text x="272" y="736">uint32_t</text><text x="424" y="736">temp_sense</text><text x="544" y="736">ntc, temp_sense</text><text x="684" y="736">ADC update</text><text x="828" y="736">volatile</text><text x="936" y="736">RAM</text>
+    <text x="76" y="756" fill="#dbe4f0">temp_c</text><text x="272" y="756">float</text><text x="424" y="756">temp_sense</text><text x="544" y="756">display, uart</text><text x="684" y="756">temp_sense</text><text x="828" y="756">volatile</text><text x="936" y="756">RAM</text>
+    <text x="76" y="776" fill="#dbe4f0">settings</text><text x="272" y="776">SystemSettings</text><text x="424" y="776">settings</text><text x="544" y="776">display, uart</text><text x="684" y="776">settings, fsm</text><text x="828" y="776">—</text><text x="936" y="776">EEPROM</text>
+    <text x="76" y="796" fill="#dbe4f0">last_uart_tick</text><text x="272" y="796">uint32_t</text><text x="424" y="796">uart_report</text><text x="544" y="796">uart_report</text><text x="684" y="796">uart_report</text><text x="828" y="796">—</text><text x="936" y="796">RAM</text>
+    <text x="76" y="816" fill="#dbe4f0">HAL handles (hadc1/htim1/hi2c2/huart2/hrtc/hdma_adc1)</text><text x="272" y="816">HAL handles</text><text x="424" y="816">hal_*</text><text x="544" y="816">hal_*</text><text x="684" y="816">cubemx</text><text x="828" y="816">—</text><text x="936" y="816">RAM</text>
+    <text x="76" y="836" fill="#dbe4f0">uwTick</text><text x="272" y="836">uint32_t</text><text x="424" y="836">HAL (SysTick)</text><text x="544" y="836">all (HAL_GetTick)</text><text x="684" y="836">SysTick_Handler</text><text x="828" y="836">volatile</text><text x="936" y="836">RAM</text>
+    <text x="76" y="856" fill="#dbe4f0">tm1637_buf / buffer_h / buffer_m</text><text x="272" y="856">uint8_t</text><text x="424" y="856">display_mgr / fsm</text><text x="544" y="856">tm1637, settings</text><text x="684" y="856">display_mgr, fsm</text><text x="828" y="856">static</text><text x="936" y="856">RAM</text>
+  </g>
+
+  <text x="1060" y="906" text-anchor="end" class="foot">DIAGRAM 2 / 6 — FIRMWARE CALL FLOW</text>
+</svg>

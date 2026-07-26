@@ -1,0 +1,164 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 920" font-family="'JetBrains Mono','Consolas',monospace">
+  <defs>
+    <marker id="arr-seq" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#3b82f6"/></marker>
+    <marker id="arr-lp" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#22d3ee"/></marker>
+  </defs>
+
+  <rect width="1100" height="920" fill="#0f172a" rx="8"/>
+  <rect x="10" y="10" width="1080" height="900" fill="none" stroke="#334155" stroke-width="2" rx="6"/>
+
+  <text x="550" y="38" text-anchor="middle" font-size="18" font-weight="bold" fill="#f8fafc">Runtime Workflow — Boot Sequence &amp; Super Loop</text>
+  <text x="550" y="58" text-anchor="middle" font-size="12" fill="#64748b">::FW_INIT_SEQUENCE (15 steps) + ::FW_SUPERLOOP (6 phases)  ·  HCLK: 8 MHz (HSI 16 MHz ÷ 2)</text>
+
+  <!-- LEFT: BOOT SEQUENCE -->
+  <rect x="30" y="80" width="500" height="580" rx="8" fill="#1e293b" stroke="#334155" stroke-width="1.5"/>
+  <text x="280" y="110" text-anchor="middle" font-size="17" font-weight="bold" fill="#60a5fa">Boot Sequence (15 steps)</text>
+  <text x="280" y="130" text-anchor="middle" font-size="12" fill="#64748b">Executed once on power-on reset</text>
+
+  <g font-size="11">
+    <rect x="50" y="152" width="460" height="25" rx="5" fill="#0f172a" stroke="#3b82f6" stroke-width="2"/>
+    <text x="68" y="169" fill="#93c5fd" font-weight="bold">1</text>
+    <text x="88" y="169" fill="#f8fafc">HAL_Init()</text>
+    <text x="320" y="169" fill="#94a3b8">SysTick 1ms · NVIC · DBGMCU</text>
+
+    <rect x="50" y="187" width="460" height="25" rx="5" fill="#0f172a" stroke="#3b82f6" stroke-width="2"/>
+    <text x="68" y="204" fill="#93c5fd" font-weight="bold">2</text>
+    <text x="88" y="204" fill="#f8fafc">SystemClock_Config()</text>
+    <text x="320" y="204" fill="#94a3b8">HSI 16MHz → HCLK 8MHz</text>
+
+    <rect x="50" y="222" width="460" height="25" rx="5" fill="#0f172a" stroke="#3b82f6" stroke-width="2"/>
+    <text x="68" y="239" fill="#93c5fd" font-weight="bold">3</text>
+    <text x="88" y="239" fill="#f8fafc">MX_GPIO_Init()</text>
+    <text x="320" y="239" fill="#94a3b8">GPIO A/B/C/D modes + AF</text>
+
+    <rect x="50" y="257" width="460" height="25" rx="5" fill="#0f172a" stroke="#3b82f6" stroke-width="2"/>
+    <text x="68" y="274" fill="#93c5fd" font-weight="bold">4</text>
+    <text x="88" y="274" fill="#f8fafc">MX_DMA_Init()</text>
+    <text x="320" y="274" fill="#f87171">DMA1_Ch1 · NVIC prio 0 (unused)</text>
+
+    <rect x="50" y="292" width="460" height="25" rx="5" fill="#0f172a" stroke="#3b82f6" stroke-width="2"/>
+    <text x="68" y="309" fill="#93c5fd" font-weight="bold">5</text>
+    <text x="88" y="309" fill="#f8fafc">MX_ADC1_Init()</text>
+    <text x="320" y="309" fill="#94a3b8">12-bit · CH0(PA0) · continuous+DMA</text>
+
+    <rect x="50" y="327" width="460" height="25" rx="5" fill="#0f172a" stroke="#3b82f6" stroke-width="2"/>
+    <text x="68" y="344" fill="#93c5fd" font-weight="bold">6</text>
+    <text x="88" y="344" fill="#f8fafc">MX_I2C2_Init()</text>
+    <text x="320" y="344" fill="#94a3b8">100kHz master · PA11/PA12 OD</text>
+
+    <rect x="50" y="362" width="460" height="25" rx="5" fill="#0f172a" stroke="#3b82f6" stroke-width="2"/>
+    <text x="68" y="379" fill="#93c5fd" font-weight="bold">7</text>
+    <text x="88" y="379" fill="#f8fafc">MX_USART2_UART_Init()</text>
+    <text x="320" y="379" fill="#94a3b8">9600 8N1 · blocking TX</text>
+
+    <rect x="50" y="397" width="460" height="25" rx="5" fill="#0f172a" stroke="#22c55e" stroke-width="2"/>
+    <text x="68" y="414" fill="#86efac" font-weight="bold">8</text>
+    <text x="88" y="414" fill="#f8fafc">MX_TIM1_Init()</text>
+    <text x="320" y="414" fill="#94a3b8">PWM 1kHz · ARR=999 PSC=7</text>
+
+    <rect x="50" y="432" width="460" height="25" rx="5" fill="#0f172a" stroke="#3b82f6" stroke-width="2"/>
+    <text x="68" y="449" fill="#93c5fd" font-weight="bold">9</text>
+    <text x="88" y="449" fill="#f8fafc">MX_RTC_Init()</text>
+    <text x="320" y="449" fill="#f87171">LSE · 24h · time=00:36 (BUG)</text>
+
+    <rect x="50" y="467" width="460" height="25" rx="5" fill="#0f172a" stroke="#a855f7" stroke-width="2"/>
+    <text x="68" y="484" fill="#c084fc" font-weight="bold">10</text>
+    <text x="88" y="484" fill="#f8fafc">ADC Calibration</text>
+    <text x="320" y="484" fill="#94a3b8">HAL_ADCEx_Calibration_Start</text>
+
+    <rect x="50" y="502" width="460" height="25" rx="5" fill="#0f172a" stroke="#a855f7" stroke-width="2"/>
+    <text x="68" y="519" fill="#c084fc" font-weight="bold">11</text>
+    <text x="88" y="519" fill="#f8fafc">Load EEPROM Settings</text>
+    <text x="320" y="519" fill="#94a3b8">I²C read · boot_count++</text>
+
+    <rect x="50" y="537" width="460" height="25" rx="5" fill="#0f172a" stroke="#a855f7" stroke-width="2"/>
+    <text x="68" y="554" fill="#c084fc" font-weight="bold">12</text>
+    <text x="88" y="554" fill="#f8fafc">tm1637_init()</text>
+    <text x="320" y="554" fill="#94a3b8">OD GPIO · brightness 5 · clear</text>
+
+    <rect x="50" y="572" width="460" height="25" rx="5" fill="#0f172a" stroke="#22c55e" stroke-width="2"/>
+    <text x="68" y="589" fill="#86efac" font-weight="bold">13</text>
+    <text x="88" y="589" fill="#f8fafc">PWM Start (×3)</text>
+    <text x="320" y="589" fill="#94a3b8">HAL_TIM_PWM_Start CH1/2/3</text>
+
+    <rect x="50" y="607" width="460" height="25" rx="5" fill="#0f172a" stroke="#22c55e" stroke-width="2"/>
+    <text x="68" y="624" fill="#86efac" font-weight="bold">14</text>
+    <text x="88" y="624" fill="#f8fafc">Initial Display</text>
+    <text x="320" y="624" fill="#94a3b8">TM1637 shows initial time</text>
+
+    <rect x="50" y="642" width="460" height="25" rx="7" fill="#22d3ee"/>
+    <text x="68" y="659" fill="#0f172a" font-weight="bold">15</text>
+    <text x="88" y="659" fill="#0f172a" font-weight="bold">while(1) — Super Loop</text>
+    <text x="320" y="659" fill="#0f172a" font-weight="bold">Infinite — never returns</text>
+  </g>
+
+  <!-- RIGHT: SUPER LOOP -->
+  <rect x="560" y="80" width="510" height="580" rx="8" fill="#1e293b" stroke="#334155" stroke-width="1.5"/>
+  <text x="815" y="110" text-anchor="middle" font-size="17" font-weight="bold" fill="#22d3ee">Super Loop (6 phases, ~6ms total)</text>
+  <text x="815" y="130" text-anchor="middle" font-size="12" fill="#64748b">::FW_SUPERLOOP — repeated every iteration</text>
+
+  <g font-size="11">
+    <rect x="590" y="152" width="450" height="62" rx="6" fill="#0f172a" stroke="#3b82f6" stroke-width="3"/>
+    <text x="610" y="174" fill="#93c5fd" font-weight="bold">Phase 1</text>
+    <text x="610" y="192" fill="#f8fafc">HAL_GetTick() Poll</text>
+    <text x="800" y="192" fill="#94a3b8">Read uwTick counter</text>
+    <text x="610" y="208" fill="#64748b">Timing: &lt;1µs · non-blocking · every loop</text>
+
+    <rect x="590" y="232" width="450" height="62" rx="6" fill="#0f172a" stroke="#a855f7" stroke-width="3"/>
+    <text x="610" y="254" fill="#c084fc" font-weight="bold">Phase 2</text>
+    <text x="610" y="272" fill="#f8fafc">Display Refresh Check</text>
+    <text x="800" y="272" fill="#94a3b8">tick-lastUpdate ≥ 1000ms</text>
+    <text x="610" y="288" fill="#64748b">~5ms if triggered · TM1637 bit-banged write · periodic @1s</text>
+
+    <rect x="590" y="312" width="450" height="62" rx="6" fill="#0f172a" stroke="#ef4444" stroke-width="3"/>
+    <text x="610" y="334" fill="#f87171" font-weight="bold">Phase 3</text>
+    <text x="610" y="352" fill="#f8fafc">Button Polling</text>
+    <text x="800" y="352" fill="#94a3b8">HAL_GPIO_ReadPin ×3</text>
+    <text x="610" y="368" fill="#64748b">~6µs · 250ms debounce gate · SW1/2/3 active-low</text>
+
+    <rect x="590" y="392" width="450" height="62" rx="6" fill="#0f172a" stroke="#f59e0b" stroke-width="3"/>
+    <text x="610" y="414" fill="#fbbf24" font-weight="bold">Phase 4</text>
+    <text x="610" y="432" fill="#f8fafc">Temperature Processing</text>
+    <text x="800" y="432" fill="#94a3b8">Update_Temperature_LED</text>
+    <text x="610" y="448" fill="#64748b">~10ms · ADC start/poll/stop · Beta eq · SET_COMPARE ×3</text>
+
+    <rect x="590" y="472" width="450" height="62" rx="6" fill="#0f172a" stroke="#3b82f6" stroke-width="3"/>
+    <text x="610" y="494" fill="#93c5fd" font-weight="bold">Phase 5</text>
+    <text x="610" y="512" fill="#f8fafc">UART Handling</text>
+    <text x="800" y="512" fill="#94a3b8">Handle_UART_Transmission</text>
+    <text x="610" y="528" fill="#64748b">~1-4ms if triggered · 9600 baud · periodic @5s (configurable)</text>
+
+    <rect x="590" y="552" width="450" height="62" rx="6" fill="#0f172a" stroke="#22c55e" stroke-width="3"/>
+    <text x="610" y="574" fill="#86efac" font-weight="bold">Phase 6</text>
+    <text x="610" y="592" fill="#f8fafc">HAL_Delay(5)</text>
+    <text x="800" y="592" fill="#94a3b8">Blocking delay</text>
+    <text x="610" y="608" fill="#64748b">5ms · SysTick busy-wait · paces iteration to ~6ms</text>
+  </g>
+
+  <!-- Loop-back arrow -->
+  <path d="M 1040 580 L 1068 580 L 1068 142 L 1045 142" stroke="#22d3ee" stroke-width="3" stroke-dasharray="8,4" fill="none" marker-end="url(#arr-lp)"/>
+  <text x="1076" y="360" font-size="13" fill="#22d3ee" font-weight="bold" transform="rotate(90 1076 360)">repeat ~6ms</text>
+
+  <!-- BOTTOM: TIMING REFERENCE -->
+  <rect x="30" y="680" width="1040" height="200" rx="8" fill="#1e293b" stroke="#334155" stroke-width="1.5"/>
+  <text x="550" y="708" text-anchor="middle" font-size="15" font-weight="bold" fill="#e5e7eb">Timing &amp; Clock Reference (::FW_TIMING)</text>
+
+  <!-- Left: Clock tree -->
+  <rect x="50" y="725" width="480" height="140" rx="6" fill="#0f172a" stroke="#334155" stroke-width="1.5"/>
+  <text x="290" y="750" text-anchor="middle" font-size="13" font-weight="bold" fill="#22d3ee">Clock Tree (::FW_CLOCK_TREE)</text>
+  <text x="70" y="775" font-size="12" fill="#94a3b8">HSI 16 MHz → AHB ÷2 → HCLK = 8 MHz</text>
+  <text x="70" y="797" font-size="12" fill="#94a3b8">├─ APB1: USART2(8MHz→9600), I2C2(8MHz→100kHz)</text>
+  <text x="70" y="819" font-size="12" fill="#94a3b8">├─ APB2: TIM1(PSC=7→1MHz→ARR=999→1kHz PWM)</text>
+  <text x="70" y="841" font-size="12" fill="#94a3b8">├─ ADC: HSI ÷4 → ~2MHz</text>
+  <text x="70" y="858" font-size="12" fill="#94a3b8">└─ LSE: 32.768kHz → async127+sync255 → 1.01Hz</text>
+
+  <!-- Right: Performance -->
+  <rect x="550" y="725" width="500" height="140" rx="6" fill="#0f172a" stroke="#334155" stroke-width="1.5"/>
+  <text x="800" y="750" text-anchor="middle" font-size="13" font-weight="bold" fill="#fbbf24">Performance Metrics</text>
+
+  <text x="570" y="775" font-size="12" fill="#94a3b8">Loop pacing: 5ms (HAL_Delay) · Total iteration: ~6ms</text>
+  <text x="570" y="797" font-size="12" fill="#94a3b8">Display refresh: every 1000ms (HAL_GetTick delta)</text>
+  <text x="570" y="819" font-size="12" fill="#94a3b8">Button debounce: 250ms per button (configurable)</text>
+  <text x="570" y="841" font-size="12" fill="#94a3b8">UART report interval: 5s default (1-99s via menu)</text>
+  <text x="570" y="858" font-size="12" fill="#94a3b8">ADC sample: 79.5 cycles (~10µs) · PWM: 1kHz</text>
+</svg>

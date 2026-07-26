@@ -234,8 +234,8 @@ void Refresh_Display_Output(void) {
             break;
 
         case STATE_SUB_SET_COLOR:
-            if (settings.led_color == 0)      tm1637_write_string(&tm1637, "GREN ");
-            else if (settings.led_color == 1) tm1637_write_string(&tm1637, "RED ");
+            if (settings.led_color == 0)      tm1637_write_string(&tm1637, "RED ");
+            else if (settings.led_color == 1) tm1637_write_string(&tm1637, "GREN ");
             else if (settings.led_color == 2) tm1637_write_string(&tm1637, "BLU ");
             break;
 

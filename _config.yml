@@ -1,0 +1,6 @@
+title: STM32 Smart Clock
+description: Interactive web-based simulator + complete embedded firmware engineering review for an STM32G030-based digital clock with NTC temperature sensing, RGB LED, TM1637 display, and menu-driven FSM.
+theme: jekyll-theme-cayman
+show_downloads: true
+github:
+  repository_url: https://github.com/MohsenSafari83/stm32-smart-clock
