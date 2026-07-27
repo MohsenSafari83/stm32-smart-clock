@@ -1,153 +1,213 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 920" font-family="'JetBrains Mono','Consolas',monospace">
   <defs>
-    <marker id="arr-sns" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#f59e0b"/></marker>
-    <marker id="arr-proc" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#3b82f6"/></marker>
-    <marker id="arr-out" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#22c55e"/></marker>
+    <marker id="arr-sns"  markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#f59e0b"/></marker>
+    <marker id="arr-proc" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#3b82f6"/></marker>
+    <marker id="arr-out"  markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#22c55e"/></marker>
+    <pattern id="p-grid" width="22" height="22" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r="0.7" fill="#1b2438"/></pattern>
+    <symbol id="i-therm"   viewBox="0 0 16 16"><rect x="6" y="1" width="4" height="9" rx="2"/><circle cx="8" cy="12.5" r="2.5"/></symbol>
+    <symbol id="i-button"  viewBox="0 0 16 16"><rect x="2" y="2" width="12" height="12" rx="3"/><circle cx="8" cy="8" r="2.5"/></symbol>
+    <symbol id="i-clock"   viewBox="0 0 16 16"><circle cx="8" cy="8" r="6.5"/><line x1="8" y1="8" x2="8" y2="4"/><line x1="8" y1="8" x2="11" y2="9.5"/></symbol>
+    <symbol id="i-adc"     viewBox="0 0 16 16"><path d="M1 11 Q3 3 5 11 T9 11"/><path d="M9 11 L11 11 L11 5 L13 5 L13 11 L15 11"/></symbol>
+    <symbol id="i-flow"    viewBox="0 0 16 16"><path d="M1 8 L11 8"/><path d="M8 5 L11 8 L8 11"/></symbol>
+    <symbol id="i-pwm"     viewBox="0 0 16 16"><path d="M1 12 L1 5 L5 5 L5 12 L9 12 L9 5 L13 5 L13 12 L15 12"/></symbol>
+    <symbol id="i-led"     viewBox="0 0 16 16"><circle cx="8" cy="8" r="3.5"/><line x1="8" y1="1" x2="8" y2="3"/><line x1="8" y1="13" x2="8" y2="15"/><line x1="1" y1="8" x2="3" y2="8"/><line x1="13" y1="8" x2="15" y2="8"/></symbol>
+    <symbol id="i-display" viewBox="0 0 16 16"><rect x="2" y="2" width="12" height="12" rx="1.5"/><line x1="8" y1="4" x2="8" y2="8"/><line x1="4" y1="8" x2="12" y2="8"/><line x1="8" y1="8" x2="8" y2="12"/></symbol>
+    <symbol id="i-uart"    viewBox="0 0 16 16"><path d="M2 13 Q8 2 14 13"/><path d="M5 13 Q8 8 11 13"/><circle cx="8" cy="13" r="1" fill="currentColor" stroke="none"/></symbol>
+    <symbol id="i-eeprom"  viewBox="0 0 16 16"><rect x="3" y="4" width="10" height="8" rx="1"/><line x1="5" y1="6" x2="11" y2="6"/><line x1="5" y1="8" x2="11" y2="8"/><line x1="5" y1="10" x2="11" y2="10"/><line x1="1" y1="6" x2="3" y2="6"/><line x1="1" y1="10" x2="3" y2="10"/><line x1="13" y1="6" x2="15" y2="6"/><line x1="13" y1="10" x2="15" y2="10"/></symbol>
+    <symbol id="i-chip"    viewBox="0 0 16 16"><rect x="4" y="4" width="8" height="8" rx="1"/><line x1="1" y1="6" x2="4" y2="6"/><line x1="1" y1="10" x2="4" y2="10"/><line x1="12" y1="6" x2="15" y2="6"/><line x1="12" y1="10" x2="15" y2="10"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="6" y1="12" x2="6" y2="15"/><line x1="10" y1="12" x2="10" y2="15"/></symbol>
   </defs>
 
-  <rect width="1100" height="920" fill="#0f172a" rx="8"/>
-  <rect x="10" y="10" width="1080" height="900" fill="none" stroke="#334155" stroke-width="2" rx="6"/>
+  <style>
+    .kicker  { font: 700 9.5px 'JetBrains Mono',monospace; letter-spacing:1.4px; fill:#f59e0b; }
+    .title   { font: 700 18px 'JetBrains Mono',monospace; fill:#f8fafc; }
+    .subtitle{ font: 11px 'JetBrains Mono',monospace; fill:#64748b; }
+    .corner  { font: 9.5px 'JetBrains Mono',monospace; fill:#475569; }
+    .foot    { font: 9px 'JetBrains Mono',monospace; fill:#3a475c; letter-spacing:.4px; }
+    .grp-t   { font: 700 15px 'JetBrains Mono',monospace; }
+    .n-t     { font: 700 14px 'JetBrains Mono',monospace; fill:#f8fafc; }
+    .n-s     { font: 10.5px 'JetBrains Mono',monospace; fill:#94a3b8; }
+    .n-m     { font: 9.5px 'JetBrains Mono',monospace; fill:#64748b; }
+    .n-pin   { font: 9.5px 'JetBrains Mono',monospace; fill:#3b82f6; }
+    .edge-lbl{ font: 700 10.5px 'JetBrains Mono',monospace; }
+    .sec-t   { font: 700 13.5px 'JetBrains Mono',monospace; fill:#e5e7eb; }
+    .grp-h   { font: 700 12.5px 'JetBrains Mono',monospace; }
+    .grp-s   { font: 10.5px 'JetBrains Mono',monospace; fill:#94a3b8; }
+    .pin-t   { font: 11px 'JetBrains Mono',monospace; fill:#94a3b8; }
+  </style>
 
-  <text x="550" y="38" text-anchor="middle" font-size="18" font-weight="bold" fill="#f8fafc">Peripheral Dependency Graph</text>
-  <text x="550" y="58" text-anchor="middle" font-size="12" fill="#64748b">::PERIPH_GRAPH — 13 nodes, 14 edges · Sensor → Process → Output</text>
+  <rect width="1100" height="920" fill="#0f172a" rx="10"/>
+  <rect width="1100" height="920" fill="url(#p-grid)" rx="10"/>
+  <rect x="10" y="10" width="1080" height="900" fill="none" stroke="#334155" stroke-width="1.5" rx="8"/>
+  <rect x="26" y="20" width="1048" height="3" rx="1.5" fill="#f59e0b" opacity="0.85"/>
+
+  <!-- Header -->
+  <text x="40" y="42" class="kicker">ENGINEERING DIAGRAM · 05 / 06</text>
+  <text x="550" y="48" text-anchor="middle" class="title">Peripheral Dependency Graph</text>
+  <text x="550" y="67" text-anchor="middle" class="subtitle">::PERIPH_GRAPH — 13 nodes · 14 edges · Sensor → Process → Output</text>
+  <use href="#i-chip" x="1030" y="30" width="14" height="14" color="#475569"/>
+  <text x="1060" y="42" text-anchor="end" class="corner">STM32G030 · Smart Clock Sim</text>
+  <line x1="40" y1="80" x2="1060" y2="80" stroke="#1c2740" stroke-width="1"/>
 
   <!-- SENSORS GROUP -->
-  <rect x="30" y="80" width="250" height="380" rx="10" fill="#1e293b" stroke="#f59e0b" stroke-width="2"/>
-  <text x="155" y="108" text-anchor="middle" font-size="16" font-weight="bold" fill="#fbbf24">SENSORS</text>
+  <rect x="30" y="92" width="250" height="380" rx="10" fill="#181f10" stroke="#f59e0b" stroke-width="1.75"/>
+  <text x="155" y="120" text-anchor="middle" class="grp-t" fill="#fbbf24">SENSORS</text>
 
-  <rect x="50" y="125" width="210" height="90" rx="8" fill="#0f172a" stroke="#f59e0b" stroke-width="3"/>
-  <text x="155" y="150" text-anchor="middle" font-size="15" font-weight="bold" fill="#f8fafc">NTC Thermistor</text>
-  <text x="155" y="170" text-anchor="middle" font-size="11" fill="#94a3b8">10kΩ @25°C · B=3950</text>
-  <text x="155" y="188" text-anchor="middle" font-size="10" fill="#64748b">R14=10kΩ to GND · voltage divider</text>
-  <text x="155" y="204" text-anchor="middle" font-size="10" fill="#3b82f6">PA0 — analog input</text>
+  <rect x="50" y="137" width="210" height="90" rx="8" fill="#0f172a" stroke="#f59e0b" stroke-width="1.75"/>
+  <use href="#i-therm" x="62" y="146" width="14" height="14" color="#fbbf24"/>
+  <text x="163" y="162" text-anchor="middle" class="n-t">NTC Thermistor</text>
+  <text x="155" y="182" text-anchor="middle" class="n-s">10 kΩ @25°C · β=3950</text>
+  <text x="155" y="200" text-anchor="middle" class="n-m">R14=10kΩ to GND · voltage divider</text>
+  <text x="155" y="216" text-anchor="middle" class="n-pin">PA0 — analog input</text>
 
-  <rect x="50" y="230" width="210" height="90" rx="8" fill="#0f172a" stroke="#ef4444" stroke-width="3"/>
-  <text x="155" y="255" text-anchor="middle" font-size="15" font-weight="bold" fill="#f8fafc">Push Buttons ×3</text>
-  <text x="155" y="275" text-anchor="middle" font-size="11" fill="#94a3b8">SW1(UP)=PB13  SW2(DN)=PB14</text>
-  <text x="155" y="293" text-anchor="middle" font-size="10" fill="#64748b">SW3(SEL)=PB15  · active-low</text>
-  <text x="155" y="309" text-anchor="middle" font-size="10" fill="#3b82f6">PB13, PB14, PB15 — digital in</text>
+  <rect x="50" y="242" width="210" height="90" rx="8" fill="#0f172a" stroke="#ef4444" stroke-width="1.75"/>
+  <use href="#i-button" x="62" y="251" width="14" height="14" color="#f87171"/>
+  <text x="163" y="267" text-anchor="middle" class="n-t">Push Buttons ×3</text>
+  <text x="155" y="287" text-anchor="middle" class="n-s">SW1(UP)=PB13 · SW2(DN)=PB14</text>
+  <text x="155" y="305" text-anchor="middle" class="n-m">SW3(SEL)=PB15 · active-low</text>
+  <text x="155" y="321" text-anchor="middle" class="n-pin">PB13, PB14, PB15 — digital in</text>
 
-  <rect x="50" y="335" width="210" height="90" rx="8" fill="#0f172a" stroke="#06b6d4" stroke-width="3"/>
-  <text x="155" y="360" text-anchor="middle" font-size="15" font-weight="bold" fill="#f8fafc">LSE Crystal</text>
-  <text x="155" y="380" text-anchor="middle" font-size="11" fill="#94a3b8">32.768 kHz</text>
-  <text x="155" y="398" text-anchor="middle" font-size="10" fill="#64748b">RTC timebase</text>
-  <text x="155" y="414" text-anchor="middle" font-size="10" fill="#3b82f6">OSC32_IN/OUT (internal)</text>
+  <rect x="50" y="347" width="210" height="90" rx="8" fill="#0f172a" stroke="#06b6d4" stroke-width="1.75"/>
+  <use href="#i-clock" x="62" y="356" width="14" height="14" color="#67e8f9"/>
+  <text x="163" y="372" text-anchor="middle" class="n-t">LSE Crystal</text>
+  <text x="155" y="392" text-anchor="middle" class="n-s">32.768 kHz</text>
+  <text x="155" y="410" text-anchor="middle" class="n-m">RTC timebase</text>
+  <text x="155" y="426" text-anchor="middle" class="n-pin">OSC32_IN/OUT (internal)</text>
 
   <!-- PROCESSING GROUP -->
-  <rect x="310" y="80" width="300" height="380" rx="10" fill="#1e293b" stroke="#3b82f6" stroke-width="2"/>
-  <text x="460" y="108" text-anchor="middle" font-size="16" font-weight="bold" fill="#60a5fa">PROCESSING</text>
+  <rect x="310" y="92" width="300" height="380" rx="10" fill="#101a26" stroke="#3b82f6" stroke-width="1.75"/>
+  <text x="460" y="120" text-anchor="middle" class="grp-t" fill="#60a5fa">PROCESSING</text>
 
-  <rect x="330" y="125" width="260" height="72" rx="8" fill="#0f172a" stroke="#3b82f6" stroke-width="3"/>
-  <text x="460" y="150" text-anchor="middle" font-size="14" font-weight="bold" fill="#f8fafc">ADC1</text>
-  <text x="460" y="170" text-anchor="middle" font-size="11" fill="#94a3b8">12-bit · CH0(PA0) · 79.5 sample cycles</text>
-  <text x="460" y="188" text-anchor="middle" font-size="10" fill="#f87171">Continuous config · DMA unused (polled)</text>
+  <rect x="330" y="137" width="260" height="72" rx="8" fill="#0f172a" stroke="#3b82f6" stroke-width="1.75"/>
+  <use href="#i-adc" x="342" y="146" width="13" height="13" color="#93c5fd"/>
+  <text x="466" y="162" text-anchor="middle" class="n-t" font-size="13">ADC1</text>
+  <text x="460" y="182" text-anchor="middle" class="n-s">12-bit · CH0(PA0) · 79.5 sample cycles</text>
+  <text x="460" y="200" text-anchor="middle" class="n-m" fill="#f87171">Continuous config · DMA unused (polled)</text>
 
-  <rect x="330" y="215" width="260" height="72" rx="8" fill="#0f172a" stroke="#f59e0b" stroke-width="3"/>
-  <text x="460" y="240" text-anchor="middle" font-size="14" font-weight="bold" fill="#f8fafc">Temperature Math</text>
-  <text x="460" y="260" text-anchor="middle" font-size="11" fill="#94a3b8">Beta eq: T=1/(A+B·ln(R)+C·ln(R)³)−273</text>
-  <text x="460" y="278" text-anchor="middle" font-size="10" fill="#64748b">A=1.129E-3 B=2.341E-4 C=8.767E-8</text>
+  <rect x="330" y="227" width="260" height="72" rx="8" fill="#0f172a" stroke="#f59e0b" stroke-width="1.75"/>
+  <use href="#i-flow" x="342" y="236" width="13" height="13" color="#fbbf24"/>
+  <text x="472" y="252" text-anchor="middle" class="n-t" font-size="13">Temperature Math</text>
+  <text x="460" y="272" text-anchor="middle" class="n-s" font-size="10">Beta eq: T=1/(A+B·ln(R)+C·ln(R)³)−273</text>
+  <text x="460" y="290" text-anchor="middle" class="n-m">A=1.129E-3  B=2.341E-4  C=8.767E-8</text>
 
-  <rect x="330" y="305" width="260" height="72" rx="8" fill="#0f172a" stroke="#a855f7" stroke-width="3"/>
-  <text x="460" y="330" text-anchor="middle" font-size="14" font-weight="bold" fill="#f8fafc">Menu FSM</text>
-  <text x="460" y="350" text-anchor="middle" font-size="11" fill="#94a3b8">8 states ::FSM_STATES</text>
-  <text x="460" y="368" text-anchor="middle" font-size="10" fill="#64748b">NORMAL ↔ MAIN_MENU → 5 sub-states</text>
+  <rect x="330" y="317" width="260" height="72" rx="8" fill="#0f172a" stroke="#a855f7" stroke-width="1.75"/>
+  <use href="#i-flow" x="342" y="326" width="13" height="13" color="#c084fc"/>
+  <text x="472" y="342" text-anchor="middle" class="n-t" font-size="13">Menu FSM</text>
+  <text x="460" y="362" text-anchor="middle" class="n-s">8 states · ::FSM_STATES</text>
+  <text x="460" y="380" text-anchor="middle" class="n-m">NORMAL ↔ MAIN_MENU → 5 sub-states</text>
 
-  <rect x="330" y="395" width="260" height="50" rx="8" fill="#0f172a" stroke="#06b6d4" stroke-width="3"/>
-  <text x="460" y="418" text-anchor="middle" font-size="14" font-weight="bold" fill="#f8fafc">RTC</text>
-  <text x="460" y="436" text-anchor="middle" font-size="11" fill="#94a3b8">LSE → async127+sync255 → ~1Hz</text>
+  <rect x="330" y="407" width="260" height="50" rx="8" fill="#0f172a" stroke="#06b6d4" stroke-width="1.75"/>
+  <use href="#i-clock" x="342" y="415" width="13" height="13" color="#67e8f9"/>
+  <text x="466" y="430" text-anchor="middle" class="n-t" font-size="13">RTC</text>
+  <text x="460" y="448" text-anchor="middle" class="n-s">LSE → async127+sync255 → ~1 Hz</text>
 
-  <!-- OUTPUTS GROUP -->
-  <rect x="640" y="80" width="430" height="470" rx="10" fill="#1e293b" stroke="#22c55e" stroke-width="2"/>
-  <text x="855" y="108" text-anchor="middle" font-size="16" font-weight="bold" fill="#4ade80">OUTPUTS</text>
+  <!-- OUTPUTS GROUP (height corrected to actually contain its children) -->
+  <rect x="640" y="92" width="430" height="410" rx="10" fill="#0e1f16" stroke="#22c55e" stroke-width="1.75"/>
+  <text x="855" y="120" text-anchor="middle" class="grp-t" fill="#4ade80">OUTPUTS</text>
 
-  <rect x="660" y="125" width="390" height="50" rx="8" fill="#0f172a" stroke="#22c55e" stroke-width="3"/>
-  <text x="855" y="148" text-anchor="middle" font-size="14" font-weight="bold" fill="#f8fafc">TIM1 PWM</text>
-  <text x="855" y="166" text-anchor="middle" font-size="11" fill="#94a3b8">1kHz · CH1(R) PA8 · CH2(G) PA9 · CH3(B) PA10</text>
+  <rect x="660" y="137" width="390" height="50" rx="8" fill="#0f172a" stroke="#22c55e" stroke-width="1.75"/>
+  <use href="#i-pwm" x="672" y="150" width="13" height="13" color="#86efac"/>
+  <text x="865" y="160" text-anchor="middle" class="n-t" font-size="13">TIM1 PWM</text>
+  <text x="855" y="178" text-anchor="middle" class="n-s">1 kHz · CH1(R) PA8 · CH2(G) PA9 · CH3(B) PA10</text>
 
-  <rect x="660" y="185" width="390" height="50" rx="8" fill="#0f172a" stroke="#22c55e" stroke-width="3"/>
-  <text x="855" y="208" text-anchor="middle" font-size="14" font-weight="bold" fill="#f8fafc">RGB LED</text>
-  <text x="855" y="226" text-anchor="middle" font-size="11" fill="#94a3b8">Common-cathode · duty mapped from temperature</text>
+  <rect x="660" y="197" width="390" height="50" rx="8" fill="#0f172a" stroke="#22c55e" stroke-width="1.75"/>
+  <use href="#i-led" x="672" y="210" width="13" height="13" color="#86efac"/>
+  <text x="865" y="220" text-anchor="middle" class="n-t" font-size="13">RGB LED</text>
+  <text x="855" y="238" text-anchor="middle" class="n-s">Common-cathode · duty mapped from temperature</text>
 
-  <rect x="660" y="245" width="390" height="50" rx="8" fill="#0f172a" stroke="#a855f7" stroke-width="3"/>
-  <text x="855" y="268" text-anchor="middle" font-size="14" font-weight="bold" fill="#f8fafc">TM1637 Display</text>
-  <text x="855" y="286" text-anchor="middle" font-size="11" fill="#94a3b8">4-digit × 7-segment · PC6(DIO) PC7(CLK) · 20µs/bit</text>
+  <rect x="660" y="257" width="390" height="50" rx="8" fill="#0f172a" stroke="#a855f7" stroke-width="1.75"/>
+  <use href="#i-display" x="672" y="270" width="13" height="13" color="#c084fc"/>
+  <text x="865" y="280" text-anchor="middle" class="n-t" font-size="13">TM1637 Display</text>
+  <text x="855" y="298" text-anchor="middle" class="n-s">4-digit × 7-segment · PC6(DIO) PC7(CLK) · 20µs/bit</text>
 
-  <rect x="660" y="305" width="390" height="50" rx="8" fill="#0f172a" stroke="#3b82f6" stroke-width="3"/>
-  <text x="855" y="328" text-anchor="middle" font-size="14" font-weight="bold" fill="#f8fafc">USART2 Serial</text>
-  <text x="855" y="346" text-anchor="middle" font-size="11" fill="#94a3b8">9600 8N1 · PA2(TX) PA3(RX-unused)</text>
+  <rect x="660" y="317" width="390" height="50" rx="8" fill="#0f172a" stroke="#3b82f6" stroke-width="1.75"/>
+  <use href="#i-uart" x="672" y="330" width="13" height="13" color="#93c5fd"/>
+  <text x="865" y="340" text-anchor="middle" class="n-t" font-size="13">USART2 Serial</text>
+  <text x="855" y="358" text-anchor="middle" class="n-s">9600 8N1 · PA2(TX) PA3(RX-unused)</text>
 
-  <rect x="660" y="365" width="390" height="50" rx="8" fill="#0f172a" stroke="#22c55e" stroke-width="3"/>
-  <text x="855" y="388" text-anchor="middle" font-size="14" font-weight="bold" fill="#f8fafc">I²C EEPROM (AT24C128)</text>
-  <text x="855" y="406" text-anchor="middle" font-size="11" fill="#94a3b8">128Kbit @ 0xA0 · PA11(SCL) PA12(SDA) · 100kHz</text>
+  <rect x="660" y="377" width="390" height="50" rx="8" fill="#0f172a" stroke="#22c55e" stroke-width="1.75"/>
+  <use href="#i-eeprom" x="672" y="390" width="13" height="13" color="#86efac"/>
+  <text x="865" y="400" text-anchor="middle" class="n-t" font-size="13">I²C EEPROM (AT24C128)</text>
+  <text x="855" y="418" text-anchor="middle" class="n-s">128 Kbit @ 0xA0 · PA11(SCL) PA12(SDA) · 100 kHz</text>
 
-  <rect x="660" y="425" width="390" height="50" rx="8" fill="#0f172a" stroke="#f59e0b" stroke-width="3"/>
-  <text x="855" y="448" text-anchor="middle" font-size="14" font-weight="bold" fill="#f8fafc">Indicator LEDs</text>
-  <text x="855" y="466" text-anchor="middle" font-size="11" fill="#94a3b8">PB3(LED1) · PD3(LED2) · push-pull output</text>
+  <rect x="660" y="437" width="390" height="50" rx="8" fill="#0f172a" stroke="#f59e0b" stroke-width="1.75"/>
+  <use href="#i-led" x="672" y="450" width="13" height="13" color="#fbbf24"/>
+  <text x="865" y="460" text-anchor="middle" class="n-t" font-size="13">Indicator LEDs</text>
+  <text x="855" y="478" text-anchor="middle" class="n-s">PB3(LED1) · PD3(LED2) · push-pull output</text>
 
   <!-- EDGES: Sensors → Processing -->
-  <path d="M 260 170 L 325 161" stroke="#f59e0b" stroke-width="3" marker-end="url(#arr-sns)"/>
-  <text x="293" y="162" text-anchor="middle" font-size="11" fill="#f59e0b" font-weight="bold">analog V</text>
+  <path d="M 260 182 L 325 173" stroke="#f59e0b" stroke-width="2.25" marker-end="url(#arr-sns)"/>
+  <text x="293" y="174" text-anchor="middle" class="edge-lbl" fill="#f59e0b">analog V</text>
 
-  <path d="M 260 275 L 325 340" stroke="#ef4444" stroke-width="3" marker-end="url(#arr-sns)"/>
-  <text x="293" y="305" text-anchor="middle" font-size="11" fill="#ef4444" font-weight="bold">GPIO level</text>
+  <path d="M 260 287 L 325 352" stroke="#ef4444" stroke-width="2.25" marker-end="url(#arr-sns)"/>
+  <text x="293" y="317" text-anchor="middle" class="edge-lbl" fill="#ef4444">GPIO level</text>
 
-  <path d="M 260 380 L 325 420" stroke="#06b6d4" stroke-width="3" marker-end="url(#arr-sns)"/>
-  <text x="293" y="405" text-anchor="middle" font-size="11" fill="#06b6d4" font-weight="bold">32.768 kHz</text>
+  <path d="M 260 392 L 325 432" stroke="#06b6d4" stroke-width="2.25" marker-end="url(#arr-sns)"/>
+  <text x="293" y="417" text-anchor="middle" class="edge-lbl" fill="#06b6d4">32.768 kHz</text>
 
   <!-- EDGES: Processing → Processing -->
-  <path d="M 460 197 L 460 210" stroke="#3b82f6" stroke-width="2" marker-end="url(#arr-proc)"/>
+  <path d="M 460 209 L 460 222" stroke="#3b82f6" stroke-width="1.75" marker-end="url(#arr-proc)"/>
 
   <!-- EDGES: Processing → Outputs -->
-  <path d="M 590 250 L 655 150" stroke="#f59e0b" stroke-width="2" marker-end="url(#arr-out)"/>
-  <text x="623" y="206" text-anchor="middle" font-size="10" fill="#f59e0b">duty</text>
+  <path d="M 590 262 L 655 162" stroke="#f59e0b" stroke-width="1.75" marker-end="url(#arr-out)"/>
+  <text x="623" y="218" text-anchor="middle" class="n-s" font-size="9.5" fill="#f59e0b">duty</text>
 
-  <path d="M 590 250 L 655 270" stroke="#a855f7" stroke-width="2" marker-end="url(#arr-out)"/>
-  <text x="623" y="264" text-anchor="middle" font-size="10" fill="#a855f7">temp_c</text>
+  <path d="M 590 262 L 655 282" stroke="#a855f7" stroke-width="1.75" marker-end="url(#arr-out)"/>
+  <text x="623" y="276" text-anchor="middle" class="n-s" font-size="9.5" fill="#a855f7">temp_c</text>
 
-  <path d="M 590 340 L 655 330" stroke="#a855f7" stroke-width="2" marker-end="url(#arr-out)"/>
-  <text x="623" y="339" text-anchor="middle" font-size="10" fill="#a855f7">state</text>
+  <path d="M 590 352 L 655 342" stroke="#a855f7" stroke-width="1.75" marker-end="url(#arr-out)"/>
+  <text x="623" y="351" text-anchor="middle" class="n-s" font-size="9.5" fill="#a855f7">state</text>
 
-  <path d="M 590 340 L 655 390" stroke="#a855f7" stroke-width="2" marker-end="url(#arr-out)"/>
-  <text x="623" y="369" text-anchor="middle" font-size="10" fill="#a855f7">save/load</text>
+  <path d="M 590 352 L 655 402" stroke="#a855f7" stroke-width="1.75" marker-end="url(#arr-out)"/>
+  <text x="623" y="381" text-anchor="middle" class="n-s" font-size="9.5" fill="#a855f7">save/load</text>
 
-  <path d="M 590 250 L 655 330" stroke="#f59e0b" stroke-width="2" stroke-dasharray="5,3" marker-end="url(#arr-out)"/>
+  <path d="M 590 262 L 655 342" stroke="#f59e0b" stroke-width="1.75" stroke-dasharray="5,3" marker-end="url(#arr-out)"/>
 
-  <path d="M 590 420 L 655 270" stroke="#06b6d4" stroke-width="2" marker-end="url(#arr-out)"/>
-  <text x="623" y="300" text-anchor="middle" font-size="10" fill="#06b6d4">time</text>
+  <path d="M 590 432 L 655 282" stroke="#06b6d4" stroke-width="1.75" marker-end="url(#arr-out)"/>
+  <text x="623" y="312" text-anchor="middle" class="n-s" font-size="9.5" fill="#06b6d4">time</text>
 
-  <path d="M 590 420 L 655 330" stroke="#06b6d4" stroke-width="2" marker-end="url(#arr-out)"/>
+  <path d="M 590 432 L 655 342" stroke="#06b6d4" stroke-width="1.75" marker-end="url(#arr-out)"/>
 
-  <!-- pwm → rgb (within outputs) -->
-  <path d="M 855 175 L 855 185" stroke="#22c55e" stroke-width="2" marker-end="url(#arr-out)"/>
+  <path d="M 855 187 L 855 197" stroke="#22c55e" stroke-width="1.75" marker-end="url(#arr-out)"/>
 
-  <!-- fsm → display -->
-  <path d="M 590 340 L 655 270" stroke="#a855f7" stroke-width="1.5" stroke-dasharray="4,2" marker-end="url(#arr-out)"/>
-  <text x="623" y="310" text-anchor="middle" font-size="10" fill="#a855f7">screen</text>
+  <path d="M 590 352 L 655 282" stroke="#a855f7" stroke-width="1.4" stroke-dasharray="4,2" marker-end="url(#arr-out)"/>
+  <text x="623" y="322" text-anchor="middle" class="n-s" font-size="9.5" fill="#a855f7">screen</text>
 
-  <!-- fsm → ind_leds -->
-  <path d="M 590 340 L 655 450" stroke="#a855f7" stroke-width="2" marker-end="url(#arr-out)"/>
-  <text x="623" y="415" text-anchor="middle" font-size="10" fill="#a855f7">LED state</text>
+  <path d="M 590 352 L 655 462" stroke="#a855f7" stroke-width="1.75" marker-end="url(#arr-out)"/>
+  <text x="623" y="427" text-anchor="middle" class="n-s" font-size="9.5" fill="#a855f7">LED state</text>
 
-  <!-- BOTTOM: LEGEND -->
-  <rect x="30" y="485" width="1040" height="110" rx="8" fill="#1e293b" stroke="#334155" stroke-width="1.5"/>
-  <text x="550" y="513" text-anchor="middle" font-size="14" font-weight="bold" fill="#e5e7eb">Peripheral Groupings</text>
+  <!-- SIGNAL DIRECTION LEGEND -->
+  <rect x="30" y="522" width="1040" height="54" rx="8" fill="#121a2c" stroke="#26344d" stroke-width="1.25"/>
+  <text x="60" y="540" class="sec-t" font-size="12.5">Signal Direction</text>
+  <line x1="60" y1="558" x2="110" y2="558" stroke="#f59e0b" stroke-width="2.5" marker-end="url(#arr-sns)"/>
+  <text x="120" y="562" class="n-s">sensor → processing (raw signal)</text>
+  <line x1="410" y1="558" x2="460" y2="558" stroke="#3b82f6" stroke-width="2.5" marker-end="url(#arr-proc)"/>
+  <text x="470" y="562" class="n-s">processing → processing (internal)</text>
+  <line x1="770" y1="558" x2="820" y2="558" stroke="#22c55e" stroke-width="2.5" marker-end="url(#arr-out)"/>
+  <text x="830" y="562" class="n-s">processing → output (dashed = optional/derived)</text>
 
-  <rect x="50" y="530" width="300" height="50" rx="6" fill="#0f172a" stroke="#f59e0b" stroke-width="2"/>
-  <text x="200" y="550" text-anchor="middle" font-size="13" font-weight="bold" fill="#fbbf24">Sensor Group</text>
-  <text x="200" y="568" text-anchor="middle" font-size="11" fill="#94a3b8">NTC (PA0 analog) · Buttons (PB13-15) · LSE (32.768 kHz)</text>
+  <!-- PERIPHERAL GROUPINGS -->
+  <rect x="30" y="592" width="1040" height="100" rx="8" fill="#121a2c" stroke="#26344d" stroke-width="1.25"/>
+  <text x="550" y="618" text-anchor="middle" class="sec-t">Peripheral Groupings</text>
 
-  <rect x="370" y="530" width="300" height="50" rx="6" fill="#0f172a" stroke="#3b82f6" stroke-width="2"/>
-  <text x="520" y="550" text-anchor="middle" font-size="13" font-weight="bold" fill="#60a5fa">Process Group</text>
-  <text x="520" y="568" text-anchor="middle" font-size="11" fill="#94a3b8">ADC1 (12-bit) · Temp Math (Beta eq) · FSM (8-state) · RTC</text>
+  <rect x="50" y="632" width="300" height="50" rx="6" fill="#0f172a" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="200" y="652" text-anchor="middle" class="grp-h" fill="#fbbf24">Sensor Group</text>
+  <text x="200" y="670" text-anchor="middle" class="grp-s">NTC (PA0 analog) · Buttons (PB13-15) · LSE (32.768 kHz)</text>
 
-  <rect x="690" y="530" width="360" height="50" rx="6" fill="#0f172a" stroke="#22c55e" stroke-width="2"/>
-  <text x="870" y="550" text-anchor="middle" font-size="13" font-weight="bold" fill="#4ade80">Output Group</text>
-  <text x="870" y="568" text-anchor="middle" font-size="11" fill="#94a3b8">PWM (PA8-10) · RGB LED · TM1637 (PC6/7) · UART (PA2) · EEPROM (PA11/12) · Ind. LEDs (PB3/PD3)</text>
+  <rect x="370" y="632" width="300" height="50" rx="6" fill="#0f172a" stroke="#3b82f6" stroke-width="1.5"/>
+  <text x="520" y="652" text-anchor="middle" class="grp-h" fill="#60a5fa">Process Group</text>
+  <text x="520" y="670" text-anchor="middle" class="grp-s">ADC1 (12-bit) · Temp Math (Beta eq) · FSM (8-state) · RTC</text>
+
+  <rect x="690" y="632" width="360" height="50" rx="6" fill="#0f172a" stroke="#22c55e" stroke-width="1.5"/>
+  <text x="870" y="652" text-anchor="middle" class="grp-h" fill="#4ade80">Output Group</text>
+  <text x="870" y="670" text-anchor="middle" class="grp-s" font-size="9.8">PWM (PA8-10) · RGB LED · TM1637 (PC6/7) · UART (PA2) · EEPROM (PA11/12) · Ind. LEDs (PB3/PD3)</text>
 
   <!-- PIN ASSIGNMENT -->
-  <rect x="30" y="610" width="1040" height="100" rx="8" fill="#0f172a" stroke="#334155" stroke-width="1.5"/>
-  <text x="550" y="638" text-anchor="middle" font-size="14" font-weight="bold" fill="#e5e7eb">Pin Assignment</text>
+  <rect x="30" y="702" width="1040" height="106" rx="8" fill="#0d1420" stroke="#26344d" stroke-width="1.25"/>
+  <text x="550" y="728" text-anchor="middle" class="sec-t">Pin Assignment</text>
 
-  <text x="50" y="664" font-size="11" fill="#94a3b8">PA0:ADC1_IN0(A)  |  PA2:USART2_TX(AF1)  |  PA3:USART2_RX(AF1-unused)  |  PA8/9/10:TIM1_CH1/2/3(AF2)  |  PA11:I2C2_SCL(AF6-OD)</text>
-  <text x="50" y="684" font-size="11" fill="#94a3b8">PA12:I2C2_SDA(AF6-OD)  |  PB3:LED1(PP-OUT)  |  PB13/14/15:SW1/2/3(IN)  |  PC6:TM1637_DIO(OD)  |  PC7:TM1637_CLK(OD)  |  PD3:LED2(PP-OUT)</text>
+  <text x="50" y="754" class="pin-t">PA0:ADC1_IN0(A)  ·  PA2:USART2_TX(AF1)  ·  PA3:USART2_RX(AF1-unused)  ·  PA8/9/10:TIM1_CH1/2/3(AF2)  ·  PA11:I2C2_SCL(AF6-OD)</text>
+  <text x="50" y="776" class="pin-t">PA12:I2C2_SDA(AF6-OD)  ·  PB3:LED1(PP-OUT)  ·  PB13/14/15:SW1/2/3(IN)  ·  PC6:TM1637_DIO(OD)  ·  PC7:TM1637_CLK(OD)  ·  PD3:LED2(PP-OUT)</text>
+  <text x="50" y="798" class="n-m">AF = alternate function · OD = open-drain · PP = push-pull</text>
+
+  <text x="1060" y="906" text-anchor="end" class="foot">DIAGRAM 5 / 6 — PERIPHERAL MAP</text>
 </svg>

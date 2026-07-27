@@ -39,9 +39,27 @@ Open `index.html` in any browser. No build step. No dependencies.
 
 ---
 
+## Contents
+
+- [Why This Project](#why-this-project)
+- [Project Showcase](#project-showcase)
+- [System Overview](#system-overview)
+- [Hardware](#hardware)
+- [Firmware Design](#firmware-design)
+- [Finite State Machine](#finite-state-machine)
+- [Signal Flow](#signal-flow)
+- [Runtime Behavior](#runtime-behavior)
+- [Engineering Highlights](#engineering-highlights)
+- [Documentation](#documentation)
+- [Roadmap](#roadmap)
+- [Quick Start](#quick-start)
+- [Project Structure](#project-structure)
+
+---
+
 ## Project Showcase
 
-The simulator is a single HTML file (~10300 lines of vanilla JavaScript) that runs a hardware-accurate model of the STM32G030 and all connected peripherals. It exposes 7 debug perspectives, each answering a specific engineering question.
+The simulator is a single HTML file (~10,300 lines — markup, styles, and vanilla JavaScript together) that runs a hardware-accurate model of the STM32G030 and all connected peripherals. It exposes 7 debug tabs, each answering a specific engineering question.
 
 ### Interactive Debugger
 

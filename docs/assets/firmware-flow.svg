@@ -107,9 +107,7 @@
 
   <!-- Edge legend -->
   <rect x="66" y="528" width="428" height="50" rx="7" fill="#0d1420" stroke="#26344d" stroke-width="1"/>
-<text x="280" y="546" text-anchor="middle" class="n-sub">
-  solid = superloop → app module · dashed = app module → HAL
-</text> 
+  <text x="280" y="546" text-anchor="middle" class="n-sub">solid = superloop → app module  ·  dashed = app module → HAL</text>
   <text x="280" y="564" text-anchor="middle" class="n-micro">tm1637 driver calls hal_gpio (bit-banged) · ntc Beta math is inline in temp_sense</text>
 
   <!-- RIGHT: INIT DEPENDENCY GRAPH -->
