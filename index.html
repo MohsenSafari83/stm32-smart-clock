@@ -1912,19 +1912,23 @@
 
     /* === TIMING ANALYSIS: LOGIC ANALYZER SCOPE === */
     .ta-chlist {
-      display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
       gap: 4px 10px; margin-bottom: 12px; padding: 8px 10px;
       background: #060b16; border: 1px solid var(--border); border-radius: 6px;
       font-family: var(--font-mono); font-size: 10px;
     }
-    .ta-ch-row { display: flex; align-items: center; gap: 6px; padding: 1px 0; }
+    .ta-ch-row { display: flex; align-items: center; gap: 6px; padding: 1px 0; min-width: 0; }
     .ta-ch-badge {
       width: 26px; height: 15px; border-radius: 3px; flex-shrink: 0;
       display: flex; align-items: center; justify-content: center;
       font-size: 8.5px; font-weight: 700; color: #0a0f1a;
     }
-    .ta-ch-pin { color: var(--text-secondary); min-width: 66px; }
-    .ta-ch-name { color: var(--text-primary); font-weight: 600; }
+    .ta-ch-pin { color: var(--text-secondary); flex-shrink: 0; }
+    .ta-ch-name {
+      color: var(--text-primary); font-weight: 600;
+      overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0;
+    }
+    .ta-ch-live { color: var(--text-muted); margin-left: auto; flex-shrink: 0; padding-left: 6px; }
     .ta-scope-toolbar {
       display: flex; align-items: center; gap: 6px; flex-wrap: wrap;
       margin-bottom: 10px; padding-bottom: 10px; border-bottom: 1px solid var(--border);
@@ -10396,6 +10400,10 @@
     const TA_SCOPE = {
       tMs: 0,
       running: true,
+      sweepRate: 0.4,                 // FIXED ms of scope-time per real ms — independent of zoom.
+                                       // (0.4 = 2.5x slow motion, so a live 10ms/div window is watchable.
+                                       // Zoom only changes the viewport width, never the clock rate — same
+                                       // as a real scope: time/div reframes the capture, it doesn't retime it.)
       divisions: 10,                  // fixed grid divisions, like a real scope
       msPerDivLevels: [0.1, 0.2, 0.5, 1, 2, 5, 10, 20, 50, 100, 200, 1000],
       msPerDivIdx: 6,                  // default 10ms/div → 100ms window (firmware loop analysis)
@@ -10403,14 +10411,13 @@
       get windowMs() { return TA_SCOPE.msPerDiv * TA_SCOPE.divisions; },
       viewEnd: 0,
       events: [],       // recorded: {ch, kind, label, detail, _startMs, _endMs, ...}
-      maxAgeMs: 6000,
+      maxAgeMs: 15000,   // retain enough history to scroll back even at the widest (1s/div) zoom
       selected: null
     };
 
     function taScopeAdvance(realDeltaMs) {
       if (TA_SCOPE.running) {
-        const rate = TA_SCOPE.windowMs / 6000; // ~6 real seconds to sweep one full window at any zoom
-        TA_SCOPE.tMs += realDeltaMs * rate;
+        TA_SCOPE.tMs += realDeltaMs * TA_SCOPE.sweepRate;
         TA_SCOPE.viewEnd = TA_SCOPE.tMs;
       }
       const floor = TA_SCOPE.tMs - TA_SCOPE.maxAgeMs;
@@ -10483,20 +10490,20 @@
       el.innerHTML = TA_CHANNELS.map(c => `<div class="ta-ch-row">
         <span class="ta-ch-badge" style="background:${c.color}">${c.ch}</span>
         <span class="ta-ch-pin">${c.pin}</span>
-        <span class="ta-ch-name">${c.name}</span>
-        <span style="margin-left:auto;color:var(--text-muted)">${c.live()}</span>
+        <span class="ta-ch-name" title="${c.name}">${c.name}</span>
+        <span class="ta-ch-live">${c.live()}</span>
       </div>`).join('');
     }
 
     const TA_LANES = [
       { id: 'ruler', label: '', h: 22 },
-      { id: 'systick', label: 'SysTick / IRQ', h: 26 },
-      { id: 'loop', label: 'Main Loop Execution', h: 34 },
-      { id: 'btn', label: 'Buttons SW1/SW2/SW3', h: 48 },
-      { id: 'adc', label: 'ADC Sampling', h: 22 },
-      { id: 'pwm', label: 'TIM1 PWM (R/G/B)', h: 54 },
-      { id: 'tm1637', label: 'TM1637 DIO / CLK', h: 40 },
-      { id: 'uart', label: 'UART2 TX', h: 26 }
+      { id: 'irq', label: 'NVIC / Interrupts', h: 40 },
+      { id: 'loop', label: 'Main Loop Execution', h: 38 },
+      { id: 'btn', label: 'CH7 · PB13-15 · Buttons', h: 48 },
+      { id: 'adc', label: 'CH6 · ADC1_IN0 · Temperature', h: 22 },
+      { id: 'pwm', label: 'CH2-4 · PA8/9/10 · TIM1 PWM (R/G/B)', h: 54 },
+      { id: 'tm1637', label: 'CH0-1 · PC6/PC7 · TM1637 DIO/CLK', h: 40 },
+      { id: 'uart', label: 'CH5 · PA2 · UART2 TX', h: 26 }
     ];
 
     function taLaneLayout() {
@@ -10528,45 +10535,72 @@
         svg += `<text x="4" y="${l.y + 10}" font-size="8.5" fill="var(--text-muted)" font-weight="700">${l.label}</text>`;
       });
 
-      // --- Ruler ---
+      // --- Ruler: fixed oscilloscope-style divisions (matches TA_SCOPE.divisions) ---
       const ruler = laneById('ruler');
-      const niceStep = taNiceStep(win / 8);
+      const divStep = win / TA_SCOPE.divisions;
       svg += `<line x1="0" y1="${ruler.y + ruler.h}" x2="${W}" y2="${ruler.y + ruler.h}" stroke="var(--border)" stroke-width="1"/>`;
-      for (let t = Math.ceil(t0 / niceStep) * niceStep; t <= t1; t += niceStep) {
+      for (let d = 0; d <= TA_SCOPE.divisions; d++) {
+        const t = t0 + d * divStep;
         const x = xOf(t);
-        svg += `<line x1="${x}" y1="${ruler.y + ruler.h - 6}" x2="${x}" y2="${totalH}" stroke="rgba(255,255,255,.05)" stroke-width="1"/>`;
+        svg += `<line x1="${x}" y1="${ruler.y + ruler.h - 6}" x2="${x}" y2="${totalH}" stroke="rgba(255,255,255,.06)" stroke-width="1"/>`;
         svg += `<text x="${x + 2}" y="${ruler.y + 12}" font-size="8.5" fill="var(--text-secondary)">${taFmtT(t)}</text>`;
       }
+      svg += `<text x="${W - 4}" y="${ruler.y + 12}" text-anchor="end" font-size="8.5" fill="var(--accent-cyan)">${taFmtT(TA_SCOPE.msPerDiv)}/div</text>`;
 
-      // --- SysTick lane: 1ms period, real ::FW_TIMING.sysTick constant ---
-      const stLane = laneById('systick');
-      const stMidY = stLane.y + stLane.h / 2;
-      if (win <= 200) {
+      // --- NVIC / Interrupts lane ---
+      // Only SysTick_IRQn is a real, firing hardware interrupt in this firmware (::FW_IRQ_TABLE).
+      // Buttons and TIM1 are polled from the super-loop, not interrupt-driven — shown honestly as
+      // "polled" markers rather than fabricated IRQ pulses.
+      const irqLane = laneById('irq');
+      const rowSt = irqLane.y + 12, rowBtn = irqLane.y + 24, rowTim = irqLane.y + 36;
+      svg += `<text x="${W - 4}" y="${rowSt + 2}" text-anchor="end" font-size="7.5" fill="var(--accent-blue)">SysTick_IRQn</text>`;
+      svg += `<text x="${W - 4}" y="${rowBtn + 2}" text-anchor="end" font-size="7.5" fill="var(--text-muted)">Buttons (polled, no EXTI)</text>`;
+      svg += `<text x="${W - 4}" y="${rowTim + 2}" text-anchor="end" font-size="7.5" fill="var(--text-muted)">TIM1 (free-running, no IRQ)</text>`;
+      if (win <= 150) {
         for (let t = Math.ceil(t0 / 1) * 1; t <= t1; t += 1) {
           const x = xOf(t);
-          svg += `<line x1="${x}" y1="${stLane.y + 6}" x2="${x}" y2="${stLane.y + stLane.h - 4}" stroke="var(--accent-blue)" stroke-width="1.25" opacity="0.85"/>`;
+          svg += `<line class="ta-seg" data-kind="irq" data-t="${t}" x1="${x}" y1="${rowSt - 6}" x2="${x}" y2="${rowSt + 3}" stroke="var(--accent-blue)" stroke-width="1.5" style="cursor:pointer"/>`;
         }
       } else {
-        svg += `<rect x="0" y="${stLane.y + 6}" width="${W}" height="${stLane.h - 10}" fill="var(--accent-blue)" opacity="0.18"/>`;
-        svg += `<text x="${W / 2}" y="${stMidY + 3}" font-size="8" text-anchor="middle" fill="var(--accent-blue)">1kHz \u2014 too dense to resolve individual edges at this zoom</text>`;
+        svg += `<rect x="0" y="${rowSt - 6}" width="${W}" height="9" fill="var(--accent-blue)" opacity="0.18"/>`;
+        svg += `<text x="4" y="${rowSt + 1}" font-size="7.5" fill="var(--accent-blue)">1kHz \u2014 too dense to resolve at this zoom</text>`;
       }
+      // button "poll" markers: small hollow diamonds at each recorded press instant — explicitly
+      // NOT interrupt pulses, matching this firmware's real polled-GPIO architecture.
+      TA_SCOPE.events.filter(e => e.ch && e.ch.indexOf('btn_') === 0 && e._endMs >= t0 && e._startMs <= t1).forEach(e => {
+        const x = xOf(e._startMs);
+        svg += `<rect x="${x - 2.5}" y="${rowBtn - 2.5}" width="5" height="5" fill="none" stroke="var(--text-muted)" stroke-width="1.2" transform="rotate(45 ${x} ${rowBtn})"/>`;
+      });
+      svg += `<line x1="0" y1="${rowTim}" x2="${W}" y2="${rowTim}" stroke="var(--border)" stroke-width="1" stroke-dasharray="2,2"/>`;
 
       // --- Main Loop execution Gantt, derived from FW_SUPERLOOP order+duration ---
       const loopLane = laneById('loop');
       const model = taLoopModel();
       const Lp = model.periodMs || 6;
-      {
+      const iterCount = (t1 - t0) / Lp;
+      if (iterCount > 400) {
+        // too many iterations to resolve individually at this zoom — show aggregated busy-time band
+        const busyFrac = Math.min(1, model.periodMs > 0 ? model.always.reduce((s, p) => s + Math.max(p._ms.typical, 0.0005), 0) / Lp : 0);
+        svg += `<rect x="0" y="${loopLane.y + 7}" width="${W}" height="${loopLane.h - 15}" fill="var(--accent-blue)" opacity="${0.15 + busyFrac * 0.25}"/>`;
+        svg += `<text x="4" y="${loopLane.y + loopLane.h - 4}" font-size="7.5" fill="var(--accent-blue)">~${Math.round(iterCount)} loop iterations \u2014 too dense to resolve individually at this zoom (avg. busy time shown)</text>`;
+      } else {
         const kStart = Math.floor(t0 / Lp) - 1, kEnd = Math.ceil(t1 / Lp) + 1;
+        // iteration boundary ticks — makes each while(1) pass a visibly distinct burst, not one block
+        for (let k = kStart; k <= kEnd; k++) {
+          const xk = xOf(k * Lp);
+          if (xk >= -2 && xk <= W + 2) svg += `<line x1="${xk.toFixed(2)}" y1="${loopLane.y}" x2="${xk.toFixed(2)}" y2="${loopLane.y + loopLane.h}" stroke="rgba(255,255,255,.12)" stroke-width="1"/>`;
+        }
+        const gap = Math.max(0, Math.min(0.3, Lp * 0.015)); // small visual gap between phases so they read as separate pulses
         for (let k = kStart; k <= kEnd; k++) {
           let cursor = k * Lp;
           model.always.forEach(p => {
             const w = Math.max(p._ms.typical, 0.0005);
-            const segStart = cursor, segEnd = cursor + w;
-            cursor = segEnd;
-            if (segEnd < t0 || segStart > t1) return;
+            const segStart = cursor + gap / 2, segEnd = cursor + w - gap / 2;
+            cursor += w;
+            if (segEnd < t0 || segStart > t1 || segEnd <= segStart) return;
             const x1 = xOf(segStart), x2 = xOf(segEnd);
             const color = p.blocking ? 'var(--accent-orange)' : 'var(--accent-blue)';
-            svg += `<rect class="ta-seg" data-kind="loop-phase" data-id="${p.id}" data-k="${k}" x="${x1.toFixed(2)}" y="${loopLane.y + 5}" width="${Math.max(1, x2 - x1).toFixed(2)}" height="${loopLane.h - 12}" fill="${color}" opacity="0.85" rx="1.5" style="cursor:pointer"/>`;
+            svg += `<rect class="ta-seg" data-kind="loop-phase" data-id="${p.id}" data-k="${k}" x="${x1.toFixed(2)}" y="${loopLane.y + 7}" width="${Math.max(1, x2 - x1).toFixed(2)}" height="${loopLane.h - 15}" fill="${color}" opacity="0.9" rx="1" style="cursor:pointer"/>`;
           });
         }
       }
@@ -10713,20 +10747,23 @@
       svg += '</svg>';
       wrap.innerHTML = svg;
 
-      document.getElementById('taScopeWindowLbl').textContent = taFmtT(win) + ' window';
+      document.getElementById('taScopeWindowLbl').textContent = taFmtT(TA_SCOPE.msPerDiv) + '/div';
       document.getElementById('taScopeCursorLbl').textContent = 't = ' + t1.toFixed(1) + ' ms';
 
-      // click-to-select
-      wrap.querySelectorAll('.ta-seg').forEach(elm => {
-        elm.addEventListener('click', () => taScopeSelect(elm));
-      });
+      // click-to-select: delegated on the wrapper (not the individual segments), because the SVG
+      // is fully rebuilt on every render — listeners bound directly to .ta-seg elements would be
+      // destroyed before a click could land on them. See taScopeWireClickDelegate().
+      taScopeWireClickDelegate();
     }
 
-    function taNiceStep(raw) {
-      const pow = Math.pow(10, Math.floor(Math.log10(raw || 1)));
-      const n = raw / pow;
-      const step = n < 1.5 ? 1 : n < 3.5 ? 2 : n < 7.5 ? 5 : 10;
-      return step * pow;
+    function taScopeWireClickDelegate() {
+      const wrap = document.getElementById('taScopeSvgWrap');
+      if (!wrap || wrap._clickWired) return;
+      wrap._clickWired = true;
+      wrap.addEventListener('click', (e) => {
+        const elm = e.target.closest('.ta-seg');
+        if (elm) taScopeSelect(elm);
+      });
     }
 
     // Reconstructs the real DIO/CLK bit sequence for a TM1637 byte queue —
@@ -10759,20 +10796,46 @@
       return bits;
     }
 
+    function taHex(n) { return '0x' + n.toString(16).toUpperCase().padStart(2, '0'); }
+
     function taScopeSelect(elm) {
       const kind = elm.dataset.kind;
       let info = null;
-      if (kind === 'loop-phase') {
+      if (kind === 'irq') {
+        const irq = FW_IRQ_TABLE.find(x => x.irq === 'SysTick_IRQn');
+        info = { title: 'SYSTICK_IRQN', rows: [['Timestamp', taFmtT(+elm.dataset.t)], ['Handler', irq ? irq.handler : 'SysTick_Handler'], ['Source', irq ? irq.source : 'SysTick timer'], ['Period', FW_TIMING.sysTick]] };
+      } else if (kind === 'loop-phase') {
         const p = taGetPhases().find(x => x.id === elm.dataset.id);
-        info = { title: p.label + ' (' + p.function + ')', rows: [['Type', p.execType], ['Blocking', p.blocking ? 'yes' : 'no'], ['Duration', p.duration || p.timing], ['Loop iteration', '#' + elm.dataset.k]] };
+        info = { title: p.label.toUpperCase() + ' (' + p.function + ')', rows: [['Type', p.execType], ['Blocking', p.blocking ? 'yes' : 'no'], ['Duration', p.duration || p.timing], ['Loop iteration', '#' + elm.dataset.k]] };
       } else if (kind === 'loop-periodic') {
         const p = taGetPhases().find(x => x.id === elm.dataset.id);
-        info = { title: p.label + ' triggered (' + p.function + ')', rows: [['Time', taFmtT(+elm.dataset.t)], ['Duration', p.duration || p.timing], ['Trigger', p.trigger || p.frequency]] };
+        info = { title: (p.label + ' TRIGGERED').toUpperCase() + ' (' + p.function + ')', rows: [['Timestamp', taFmtT(+elm.dataset.t)], ['Duration', p.duration || p.timing], ['Trigger', p.trigger || p.frequency]] };
       } else if (kind === 'adc') {
-        info = { title: 'ADC1 sample', rows: [['Time', taFmtT(+elm.dataset.t)], ['Conv. time', FW_TIMING.adcSample], ['Channel', 'ADC_CHANNEL_0 (PA0)']] };
-      } else if (kind === 'button' || kind === 'tm1637' || kind === 'uart') {
+        info = { title: 'ADC1 SAMPLE EVENT', rows: [['Timestamp', taFmtT(+elm.dataset.t)], ['Peripheral', 'ADC1'], ['Channel', 'ADC1_IN0 (PA0)'], ['Conv. time', FW_TIMING.adcSample]] };
+      } else if (kind === 'button') {
         const e = TA_SCOPE.events[+elm.dataset.idx];
-        if (e) info = { title: e.label, rows: [['Start', taFmtT(e._startMs)], ['End', taFmtT(e._endMs)], ['Duration', taFmtT(e._endMs - e._startMs)], ['Detail', e.detail]] };
+        if (e) info = { title: 'BUTTON PRESS EVENT', rows: [['Timestamp', taFmtT(e._startMs)], ['Duration', taFmtT(e._endMs - e._startMs)], ['GPIO', e.label], ['Detail', e.detail]] };
+      } else if (kind === 'tm1637') {
+        const e = TA_SCOPE.events[+elm.dataset.idx];
+        if (e) info = {
+          title: 'TM1637 WRITE EVENT', rows: [
+            ['Timestamp', taFmtT(e._startMs)], ['Duration', taFmtT(e._endMs - e._startMs)],
+            ['Peripheral', 'TM1637'], ['GPIO', 'PC6 DIO \u00b7 PC7 CLK'],
+            ['Data', e.queue.map(taHex).join(' ')], ['Detail', e.detail]
+          ]
+        };
+      } else if (kind === 'uart') {
+        const e = TA_SCOPE.events[+elm.dataset.idx];
+        if (e) {
+          const bytes = Array.from(e.text).map(c => taHex(c.charCodeAt(0)) + " ('" + (c === '\n' ? '\\n' : c === '\r' ? '\\r' : c) + "')");
+          info = {
+            title: 'UART2 TX EVENT', rows: [
+              ['Timestamp', taFmtT(e._startMs)], ['Duration', taFmtT(e._endMs - e._startMs)],
+              ['Peripheral', 'USART2'], ['Baud', '9600 8N1'], ['GPIO', 'PA2 TX'],
+              ['Bytes', bytes.join(', ')]
+            ]
+          };
+        }
       }
       const panel = document.getElementById('taScopeDetails');
       if (!info) { panel.innerHTML = '<div style="color:var(--text-muted);font-size:11px">No detail available for this segment.</div>'; return; }
