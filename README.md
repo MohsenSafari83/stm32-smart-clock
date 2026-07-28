@@ -59,7 +59,7 @@ Open `index.html` in any browser. No build step. No dependencies.
 
 ## Project Showcase
 
-The simulator is a single HTML file (~10,300 lines — markup, styles, and vanilla JavaScript together) that runs a hardware-accurate model of the STM32G030 and all connected peripherals. It exposes 7 debug tabs, each answering a specific engineering question.
+The simulator is a single HTML file (~11,300 lines — markup, styles, and vanilla JavaScript together) that runs a hardware-accurate model of the STM32G030 and all connected peripherals. It exposes 8 debug tabs, each answering a specific engineering question.
 
 ### Interactive Debugger
 
@@ -96,6 +96,12 @@ Expandable configuration cards for every peripheral — verify register settings
 <img src="docs/screenshots/s7.png" alt="Runtime workflow" width="750"/>
 
 15-step boot sequence and 6-phase super-loop visualized with timing annotations.
+
+### Timing Analysis
+
+<img src="docs/screenshots/s8.png" alt="Runtime workflow" width="750"/>
+
+A logic-analyzer-style waveform capture — SysTick, main-loop phase execution, button GPIO, ADC sample markers, TIM1 PWM, TM1637 DIO/CLK, and UART2 TX, all on one zoomable, scrollable time axis with click-to-inspect detail. Deterministic channels (SysTick, PWM, loop timing) are computed from the same `FW_SUPERLOOP`/`FW_TIMING` model driving the rest of the simulator; event-driven channels (button presses, TM1637 bus transactions, UART bursts) are recorded from the live simulator state as they happen — the TM1637 waveform reflects the actual byte queue being transmitted, and the UART waveform reflects the actual message text, both at their real per-bit timing.
 
 ---
 
@@ -213,7 +219,9 @@ HAL_Init → SystemClock_Config → 7× MX peripheral init → ADC calibration �
 
 - **STM32 peripheral modeling** — ADC (12-bit, 79.5 cycle sample, continuous mode), TIM1 (1 kHz PWM, 3 independent channels), RTC (LSE 32.768 kHz → async 127 / sync 255 divider chain), I²C (START/STOP/ACK generation) — all modeled at register-level accuracy.
 
-- **Browser-based debugging** — 7 debug tabs, animated particle signal propagation, ring-buffered 1000-line console log, step-through FSM animation — zero dependencies, single HTML file, runs on GitHub Pages.
+- **Browser-based debugging** — 8 debug tabs, animated particle signal propagation, ring-buffered 1000-line console log, step-through FSM animation — zero dependencies, single HTML file, runs on GitHub Pages.
+
+- **Real-recorded timing capture, not synthetic waveforms** — the Timing Analysis tab's event-driven channels (buttons, TM1637 bus, UART) are recorded at the moment they actually happen in the live simulator, not generated from fixed templates: the TM1637 waveform is built from the real byte queue for whatever text is on screen, and the UART waveform is built from the real outgoing message.
 
 - **Bare-metal architecture on Cortex-M0+** — 5-layer stack with no FPU and no RTOS. Inline Beta equation using Steinhart-Hart coefficients (A=1.129E-3, B=2.341E-4, C=8.767E-8). Sub-25 µs button polling with 250 ms software debounce.
 
@@ -257,7 +265,7 @@ The simulator runs entirely in the browser. For the firmware build, open `FINAL.
 
 ```
 STM32-SMART-CLOCK/
-├── index.html              ← Interactive simulator (~9900 lines, single-file)
+├── index.html              ← Interactive simulator (~11,300 lines, single-file)
 ├── Core/                   ← Firmware source + headers
 ├── Drivers/                ← STM32G0xx HAL + CMSIS-Core
 ├── MDK-ARM/                ← Keil MDK-ARM project
