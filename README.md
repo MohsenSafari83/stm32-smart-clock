@@ -59,7 +59,7 @@ Open `index.html` in any browser. No build step. No dependencies.
 
 ## Project Showcase
 
-The simulator is a single HTML file (~11,300 lines — markup, styles, and vanilla JavaScript together) that runs a hardware-accurate model of the STM32G030 and all connected peripherals. It exposes 8 debug tabs, each answering a specific engineering question.
+The simulator is a single HTML file (~11,400 lines — markup, styles, and vanilla JavaScript together) that runs a hardware-accurate model of the STM32G030 and all connected peripherals. It exposes 8 debug tabs, each answering a specific engineering question.
 
 ### Interactive Debugger
 

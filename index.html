@@ -1948,11 +1948,17 @@
       border: 1px solid var(--border); border-radius: 6px;
       overflow: hidden; cursor: crosshair; user-select: none;
     }
+    /* SVG's default pointer-events (visiblePainted) ignores transparent-fill and unpainted
+       shapes — several hit-areas in the scope (e.g. the button lane) rely on a transparent
+       fill purely as a click target, so they need pointer-events forced on explicitly. */
+    .ta-seg { pointer-events: all; }
     .ta-scope-details {
       margin-top: 10px; padding: 10px 12px; background: var(--bg-primary);
       border: 1px solid var(--border); border-radius: 6px; font-size: 11px; min-height: 20px;
-      font-family: var(--font-mono);
+      font-family: var(--font-mono); scroll-margin: 16px;
+      transition: border-color .3s, box-shadow .3s;
     }
+    .ta-scope-details.ta-flash { border-color: var(--accent-cyan); box-shadow: 0 0 0 1px var(--accent-cyan), 0 0 12px rgba(6,182,212,.35); }
     .ta-scope-details .ta-d-title { font-weight: 700; color: var(--accent-cyan); font-size: 12px; margin-bottom: 6px; text-transform: uppercase; letter-spacing: .4px; }
     .ta-scope-details .ta-d-row { display: flex; gap: 6px; color: var(--text-secondary); padding: 1.5px 0; }
     .ta-scope-details .ta-d-row b { color: var(--text-muted); min-width: 90px; display: inline-block; font-weight: 600; text-transform: uppercase; font-size: 9.5px; letter-spacing: .3px; }
@@ -10424,6 +10430,20 @@
       while (TA_SCOPE.events.length && TA_SCOPE.events[0]._endMs < floor) TA_SCOPE.events.shift();
     }
 
+    // The recording clock (tMs) always advances at a fixed rate, regardless of zoom — that part
+    // must stay constant or recorded event timestamps get distorted (see taScopeAdvance). But
+    // redrawing the SVG every animation frame while running is only watchable when a frame's
+    // worth of clock advance is a small fraction of what's on screen. At fine zoom (narrow
+    // window) that's no longer true, so instead of forcing a pause the user didn't ask for, the
+    // redraw itself is throttled to a steady, watchable cadence — the view steps forward in
+    // readable increments rather than replacing itself faster than the eye can track. Run/Freeze
+    // remains entirely under the user's control.
+    function taScopeTargetFps() {
+      const mspd = TA_SCOPE.msPerDiv;
+      if (mspd >= 10) return 60;   // wide enough that per-frame advance is a small slice — full rate
+      if (mspd >= 1) return 12;
+      return 4;                    // sub-1ms/div — advance is huge relative to the window; step slowly
+    }
     function taScopeRecord(ev) { TA_SCOPE.events.push(ev); }
 
     // --- Recording: TM1637 bus transaction (real byte queue, real 20µs/bit) ---
@@ -10526,7 +10546,7 @@
       const lanes = taLaneLayout();
       const totalH = lanes[lanes.length - 1].y + lanes[lanes.length - 1].h + 4;
       const laneById = id => lanes.find(l => l.id === id);
-      let svg = `<svg viewBox="0 0 ${W} ${totalH}" width="100%" height="${totalH}" style="display:block;font-family:var(--font-mono)" id="taScopeSvg">`;
+      let svg = `<svg viewBox="0 0 ${W} ${totalH}" width="100%" height="${totalH}" preserveAspectRatio="none" style="display:block;overflow:hidden;font-family:var(--font-mono)" id="taScopeSvg">`;
 
       // lane background stripes + labels
       lanes.forEach((l, i) => {
@@ -10543,9 +10563,13 @@
         const t = t0 + d * divStep;
         const x = xOf(t);
         svg += `<line x1="${x}" y1="${ruler.y + ruler.h - 6}" x2="${x}" y2="${totalH}" stroke="rgba(255,255,255,.06)" stroke-width="1"/>`;
-        svg += `<text x="${x + 2}" y="${ruler.y + 12}" font-size="8.5" fill="var(--text-secondary)">${taFmtT(t)}</text>`;
+        // skip the last gridline's label — it sits right at the edge and duplicates the
+        // toolbar's live "t = ...ms" readout; drawing it here is what caused the label
+        // collision at the right edge.
+        if (d < TA_SCOPE.divisions) {
+          svg += `<text x="${x + 2}" y="${ruler.y + 12}" font-size="8.5" fill="var(--text-secondary)">${taFmtT(t)}</text>`;
+        }
       }
-      svg += `<text x="${W - 4}" y="${ruler.y + 12}" text-anchor="end" font-size="8.5" fill="var(--accent-cyan)">${taFmtT(TA_SCOPE.msPerDiv)}/div</text>`;
 
       // --- NVIC / Interrupts lane ---
       // Only SysTick_IRQn is a real, firing hardware interrupt in this firmware (::FW_IRQ_TABLE).
@@ -10748,7 +10772,8 @@
       wrap.innerHTML = svg;
 
       document.getElementById('taScopeWindowLbl').textContent = taFmtT(TA_SCOPE.msPerDiv) + '/div';
-      document.getElementById('taScopeCursorLbl').textContent = 't = ' + t1.toFixed(1) + ' ms';
+      document.getElementById('taScopeCursorLbl').textContent =
+        (TA_SCOPE.running ? '' : '\u23F8 FROZEN \u00b7 ') + 't = ' + t1.toFixed(1) + ' ms';
 
       // click-to-select: delegated on the wrapper (not the individual segments), because the SVG
       // is fully rebuilt on every render — listeners bound directly to .ta-seg elements would be
@@ -10840,6 +10865,12 @@
       const panel = document.getElementById('taScopeDetails');
       if (!info) { panel.innerHTML = '<div style="color:var(--text-muted);font-size:11px">No detail available for this segment.</div>'; return; }
       panel.innerHTML = `<div class="ta-d-title">${info.title}</div>` + info.rows.map(r => `<div class="ta-d-row"><b>${r[0]}</b><span>${r[1]}</span></div>`).join('');
+      panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      panel.classList.remove('ta-flash');
+      void panel.offsetWidth; // restart the CSS transition even if already flashing
+      panel.classList.add('ta-flash');
+      clearTimeout(panel._flashTimer);
+      panel._flashTimer = setTimeout(() => panel.classList.remove('ta-flash'), 900);
     }
 
     function taScopeWireToolbar() {
@@ -10852,6 +10883,7 @@
           taRenderScope();
         });
         document.getElementById('taScopeLive').addEventListener('click', () => {
+          TA_SCOPE.msPerDivIdx = 6; // reset to 10ms/div — the safe live-watchable default
           TA_SCOPE.running = true; TA_SCOPE.viewEnd = TA_SCOPE.tMs;
           playBtn.innerHTML = '&#9208; Freeze';
           taRenderScope();
@@ -10883,10 +10915,16 @@
       }
     }
 
+    let _taLastScopeRenderWall = 0;
     function taRenderExecTimeline() {
       taScopeWireToolbar();
       taRenderChannelList();
-      taRenderScope();
+      const now = performance.now();
+      const minInterval = 1000 / taScopeTargetFps();
+      if (now - _taLastScopeRenderWall >= minInterval) {
+        _taLastScopeRenderWall = now;
+        taRenderScope();
+      }
     }
 
     // --- Section 2: Boot Sequence Timing ---
